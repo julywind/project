@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xsi:schemaLocation="   
+          http://www.springframework.org/schema/beans   
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
+          http://www.springframework.org/schema/tx   
+          http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
+          http://www.springframework.org/schema/context   
+          http://www.springframework.org/schema/context/spring-context-3.0.xsd   
+          http://www.springframework.org/schema/aop   
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" default-autowire="byName">
+
+     <context:property-placeholder location="classpath:database.properties"/>
+     
+     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+     	<property name="driverClass" value="${mysql.driverclass}"></property>
+     	<property name="jdbcUrl" value="${mysql.jdbcurl}"></property>
+     	<property name="user" value="${mysql.user}"></property>
+     	<property name="password" value="${mysql.password}"></property>
+     	<property name="acquireIncrement" value="5"></property>  <!-- 当连接池中的连接用完时，C3P0一次性创建新连接的数目2 -->
+     	<property name="initialPoolSize" value="10"></property>  <!-- 初始化时创建的连接数，必须在minPoolSize和maxPoolSize之间 -->
+     	<property name="minPoolSize" value="5"></property>
+     	<property name="maxPoolSize" value="20"></property>
+     	<!-- 最大空闲时间，超过空闲时间的连接将被丢弃
+     	[需要注意：mysql默认的连接时长为8小时(28800）【可在my.ini中添加 wait_timeout=30(单位秒)设置连接超时】,这里设置c3p0的超时必须<28800] 
+     	-->
+     	<property name="maxIdleTime" value="300"></property>  
+     	<property name="idleConnectionTestPeriod" value="60"></property> <!-- 每60秒检查连接池中的空闲连接 -->
+     	<property name="maxStatements" value="20"></property>  <!-- jdbc的标准参数  用以控制数据源内加载的PreparedStatement数量，但由于预缓存的Statement属 于单个Connection而不是整个连接 -->
+     </bean>
+     
+     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+     	<property name="dataSource" ref="dataSource"></property>
+     </bean>
+     
+     <!-- 声明式事务管理 -->
+     <aop:config>
+     	<aop:advisor pointcut="execution(* com.aokunsang.service.impl.*ServiceImpl.*(..))" advice-ref="myAdvice"/>
+     </aop:config>
+     <tx:advice id="myAdvice" transaction-manager="txManager">
+     	<tx:attributes>
+     		<tx:method name="add*" propagation="REQUIRED"/>
+     		<tx:method name="update*" propagation="REQUIRED"/>
+     		<tx:method name="*" read-only="true" rollback-for="com.aokunsang.util.DaoException"/>
+     	</tx:attributes>
+     </tx:advice>
+     
+     <!-- 自动扫描组件，需要把controller去掉，否则影响事务管理 -->
+     <context:component-scan base-package="com.aokunsang">
+     	<context:exclude-filter type="regex" expression="com.aokunsang.web.*"/>
+     </context:component-scan>
+     
+</beans>
