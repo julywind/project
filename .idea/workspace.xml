@@ -36,8 +36,8 @@
       <file leaf-file-name="AuthorityAnnotationInterceptor.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/web/interceptor/AuthorityAnnotationInterceptor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4936479" vertical-offset="718" max-vertical-offset="1566">
-              <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.39564428" vertical-offset="718" max-vertical-offset="1566">
+              <caret line="52" column="9" selection-start-line="52" selection-start-column="9" selection-end-line="52" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -774,12 +774,12 @@
       <workItem from="1406826725342" duration="625000" />
       <workItem from="1406859639044" duration="595000" />
       <workItem from="1406889352439" duration="594000" />
-      <workItem from="1407116217082" duration="5354000" />
+      <workItem from="1407116217082" duration="5471000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10589000" />
+    <option name="totallyTimeSpent" value="10706000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1135" y="519" width="1635" height="1074" extended-state="6" />
@@ -988,8 +988,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/web/interceptor/AuthorityAnnotationInterceptor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4936479" vertical-offset="718" max-vertical-offset="1566">
-          <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.39564428" vertical-offset="718" max-vertical-offset="1566">
+          <caret line="52" column="9" selection-start-line="52" selection-start-column="9" selection-end-line="52" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
