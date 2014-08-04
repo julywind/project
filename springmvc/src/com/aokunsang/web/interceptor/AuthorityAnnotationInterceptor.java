@@ -6,6 +6,7 @@ package com.aokunsang.web.interceptor;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +59,7 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
                 //传统的登录页面
                 StringBuilder sb = new StringBuilder();
                 sb.append(request.getContextPath());
-                sb.append("/oprst.jsp?oprst=false&opmsg=").append(URLEncoder.encode("没有权限","utf-8"));
+                sb.append("/tip/noPermission.html?&msg=").append(URLEncoder.encode("No permission to access", "UTF-8"));
                 response.sendRedirect(sb.toString());
             } else if (fireAuthority.resultType() == ResultTypeEnum.json) {
                 //ajax类型的登录提示
@@ -66,7 +67,7 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
                 response.setContentType("text/html;charset=UTF-8");
                 OutputStream out = response.getOutputStream();
                 PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
-                pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"没有权限"+"\"}");
+                pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"No permission to access"+"\"}");
                 pw.flush();
                 pw.close();
             }
@@ -76,6 +77,13 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         }
         return true;
     }
+
+    public static void main(String args[]) throws UnsupportedEncodingException {
+        String name=java.net.URLEncoder.encode("测试", "UTF-8");
+        System.out.println(name);
+        System.out.println(java.net.URLDecoder.decode(name, "ISO-8859-1"));
+    }
+
 
 }
 

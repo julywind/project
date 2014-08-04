@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aokunsang.po.User;
 import com.aokunsang.service.LoginService;
@@ -30,7 +29,6 @@ public class LoginController extends BaseController{
     @FireAuthority(authorityTypes = AuthorityType.SALES_ORDER_DELETE, resultType= ResultTypeEnum.page)
 	@RequestMapping(value="/user/login",method=RequestMethod.GET)
 	public String login(){
-		
 		return "login";
 	}
 
@@ -55,4 +53,9 @@ public class LoginController extends BaseController{
 		loginService.addUser(user);
 		return "login";
 	}
+
+    @RequestMapping(value="/tip/noPermission")
+    public String noPermission(){
+        return "noPermission";
+    }
 }
