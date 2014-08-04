@@ -26,6 +26,8 @@ CREATE TABLE `user` (
   `first_name` varchar(10) DEFAULT NULL,
   `last_name` varchar(20) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
+  `phone_number` varchar(42) DEFAULT "",
+  `authority` varchar(255),
   `age` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

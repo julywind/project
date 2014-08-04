@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source source="LOCAL" name="MySQL - test@42.62.16.131" uuid="22ffa305-22a8-4030-bdae-931600e3e9df">
+    <database-info product="MySQL" version="5.5.35-1ubuntu1" jdbc-version="3.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-3.1.13 ( $Date: 2005-11-17 15:53:48 +0100 (Thu, 17 Nov 2005) $, $Revision$ )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+  </data-source>
+</component>

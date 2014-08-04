@@ -19,7 +19,7 @@ public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	private BaseDao baseDao;
-	static String addUser = "insert into user(username,password,first_name,last_name,birthday,age) values(:userName,:passWord,:firstName,:lastName,:birthday,:age);";
+	static String addUser = "insert into user(username,password,first_name,last_name,birthday,phone_number,authority,age) values(:userName,:passWord,:firstName,:lastName,:birthday,:phoneNumber,:authority,:age);";
 	static String getUser = "select * from user where username = ? and password = ?";
 	
 	@Override

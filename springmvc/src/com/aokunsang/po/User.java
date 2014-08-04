@@ -17,6 +17,8 @@ public class User implements Serializable{
 	private String firstName; 
 	private String lastName;
 	private String birthday;  //生日
+    private String phoneNumber;
+    private String authority;
 	private Integer age;
 	/**
 	 * @return the id
@@ -102,5 +104,31 @@ public class User implements Serializable{
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
-	
+
+    /**
+     * @return the phoneNumber
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    /**
+     * @param phoneNumber the phoneNumber to set
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * @return the authority
+     */
+    public String getAuthority() {
+        return authority;
+    }
+
+    /**
+     * @param authority the authority to set
+     */
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
 }

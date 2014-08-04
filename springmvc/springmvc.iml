@@ -254,15 +254,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
-      <library name="log4j-1.2.17.zip">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/WebRoot/WEB-INF/lib/log4j-1.2.17.zip!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
       <library name="aopalliance-alpha1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/WebRoot/WEB-INF/lib/aopalliance-alpha1.jar!/" />
@@ -407,6 +398,15 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Tomcat6" level="application_server_libraries" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/WebRoot/WEB-INF/lib/log4j-1.2.17.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

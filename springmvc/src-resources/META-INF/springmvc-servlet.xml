@@ -29,6 +29,7 @@
     		<mvc:mapping path="/usermanager/*"/>
 			<bean  class="com.aokunsang.web.interceptor.MyInterceptor"></bean>
     	</mvc:interceptor>
+        <bean class="com.aokunsang.web.interceptor.AuthorityAnnotationInterceptor"></bean>
     </mvc:interceptors>
     
      <!-- 全局配置 
