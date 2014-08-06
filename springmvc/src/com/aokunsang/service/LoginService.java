@@ -12,6 +12,7 @@ import com.aokunsang.po.User;
 public interface LoginService {
 
 	public User getUser(String userName,String password);
+	public boolean duplicateUser(User user) ;
 	public void addUser(User user);
 	
 }

@@ -63,8 +63,11 @@ public class LoginController extends BaseController{
 		if(null == user.getAuthority()){
 			user.setAuthority("000000");
 		}
-		loginService.addUser(user);
-		return "login";
+		if(!loginService.duplicateUser(user)){
+			loginService.addUser(user);
+			return "login";
+		}
+		return "MyHome";
 	}
 
     @RequestMapping(value="/tip/noPermission")
