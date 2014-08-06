@@ -18,6 +18,7 @@
 	   firstName：<input type="text" name="firstName"><br/>
 	   lastName：<input type="text" name="lastName"><br/>
 	   age：<input type="text" name="age"><br/>
+	   phoneNumber: <input type="text" name="phonenumber"/><br/>
 	   birthday：<input type="text" name="birthday"><br/>
 	   <input type="submit" value="提交">
     </form>

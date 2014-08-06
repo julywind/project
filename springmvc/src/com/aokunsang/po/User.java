@@ -4,13 +4,15 @@
 package com.aokunsang.po;
 
 import java.io.Serializable;
-
+import java.io.UnsupportedEncodingException;
+import java.security.*;
 /**
  * @author tushen
  * @date Nov 4, 2011
  */
 public class User implements Serializable{
 
+	
 	private Integer id;
 	private String userName;  //用户名
 	private String passWord;  //密码
@@ -87,10 +89,22 @@ public class User implements Serializable{
 		return passWord;
 	}
 	/**
+	 * passWord is Encoded By MD5
 	 * @param passWord the passWord to set
 	 */
 	public void setPassWord(String passWord) {
-		this.passWord = passWord;
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");			
+			String encode = new String(md5.digest(passWord.getBytes("GBK")));
+			this.passWord = encode;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	/**
 	 * @return the birthday
