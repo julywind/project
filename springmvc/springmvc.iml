@@ -46,6 +46,16 @@
       <src_folder value="file://$MODULE_DIR$/src-resources" expected_position="1" />
     </src_description>
   </component>
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src-resources/META-INF/jdbc-context.xml</file>
+          <file>file://$MODULE_DIR$/src-resources/META-INF/springmvc-servlet.xml</file>
+        </fileset>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/WebRoot/WEB-INF/classes" />
     <exclude-output />
