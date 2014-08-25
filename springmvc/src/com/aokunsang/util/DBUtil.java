@@ -43,7 +43,8 @@ public class DBUtil{
 			id = simpleJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(obj));
 		} catch (Exception e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return null;
+            //throw new DaoException("数据库操作失败！",e);
 		}
 		return id;
 	}
@@ -65,7 +66,8 @@ public class DBUtil{
 								obj);
 		} catch (Exception e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return null;
+			//throw new DaoException("数据库操作失败！",e);
 		}
 		return array;
 	}
@@ -83,7 +85,8 @@ public class DBUtil{
 			map = simpleJdbcTemplate.queryForMap(sql, obj);
 		} catch (Exception e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return null;
+			//throw new DaoException("数据库操作失败！",e);
 		}
 		
 		return map;
@@ -103,7 +106,8 @@ public class DBUtil{
 			object = simpleJdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(className), obj);
 		} catch (DataAccessException e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return null;
+			//throw new DaoException("数据库操作失败！",e);
 		}
 		return object;
 	}
@@ -122,7 +126,8 @@ public class DBUtil{
 													SqlParameterSourceUtils.createBatch(obj.toArray()));
 		} catch (Exception e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return null;
+            //throw new DaoException("数据库操作失败！",e);
 		}
 		return a;
 	}
@@ -139,7 +144,8 @@ public class DBUtil{
 			index = simpleJdbcTemplate.queryForInt(sql, obj);
 		} catch (Exception e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return 0;
+            //throw new DaoException("数据库操作失败！",e);
 		}
 		return index;
 	}
@@ -156,7 +162,8 @@ public class DBUtil{
 			index = simpleJdbcTemplate.update(sql, obj);
 		} catch (DataAccessException e) {
 			log.info(e);
-			throw new DaoException("数据库操作失败！",e);
+            return 0;
+            //throw new DaoException("数据库操作失败！",e);
 		}
 		return index;
 	}

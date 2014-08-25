@@ -407,7 +407,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Tomcat6" level="application_server_libraries" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
@@ -417,6 +416,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="PROVIDED" name="Tomcat 6.0.30" level="application_server_libraries" />
   </component>
 </module>
 

@@ -19,7 +19,7 @@ import com.aokunsang.web.BaseController;
 @Controller
 public class MyHomeController extends BaseController {
 
-    @FireAuthority(authorityTypes = {AuthorityType.SALES_ORDER_FIND}, resultType= ResultTypeEnum.page)
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
 	@RequestMapping(value="/user/home",method=RequestMethod.GET)
 	public String ajaxGet(){
 		

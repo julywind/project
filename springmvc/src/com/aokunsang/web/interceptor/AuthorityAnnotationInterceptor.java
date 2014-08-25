@@ -17,6 +17,7 @@ import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.po.User;
 import com.aokunsang.util.ResultTypeEnum;
+import com.aokunsang.web.controller.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -40,7 +41,7 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         logger.debug("fireAuthority", fireAuthority.toString());
 
         HttpSession session = request.getSession();
-        User manager = (User)session.getAttribute("user");
+        User manager = (User)session.getAttribute(LoginController.LOGIN_FLAG);
         boolean aflag = false;
 
         if(manager!=null)
@@ -59,7 +60,12 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
                 //传统的登录页面
                 StringBuilder sb = new StringBuilder();
                 sb.append(request.getContextPath());
-                sb.append("/tip/noPermission.html?&msg=").append(URLEncoder.encode("No permission to access", "UTF-8"));
+                if(manager!=null) {
+                    sb.append("/tip/noPermission.html?&msg=").append(URLEncoder.encode("No permission to access", "UTF-8"));
+                }else
+                {
+                    sb.append("/user/login.html");
+                }
                 response.sendRedirect(sb.toString());
             } else if (fireAuthority.resultType() == ResultTypeEnum.json) {
                 //ajax类型的登录提示
@@ -67,7 +73,13 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
                 response.setContentType("text/html;charset=UTF-8");
                 OutputStream out = response.getOutputStream();
                 PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
-                pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"No permission to access"+"\"}");
+                if(manager!=null) {
+                    pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"No permission to access"+"\"}");
+                }else
+                {
+                    pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"You did't logged in system."+"\"}");
+                }
+
                 pw.flush();
                 pw.close();
             }

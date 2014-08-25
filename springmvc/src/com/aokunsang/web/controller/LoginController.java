@@ -3,10 +3,9 @@
  */
 package com.aokunsang.web.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
+import com.aokunsang.authority.AuthorityType;
+import com.aokunsang.authority.FireAuthority;
+import com.aokunsang.util.ResultTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +15,8 @@ import com.aokunsang.po.User;
 import com.aokunsang.service.LoginService;
 import com.aokunsang.web.BaseController;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * 登陆方法
  * @author tushen
@@ -24,54 +25,70 @@ import com.aokunsang.web.BaseController;
 @Controller
 public class LoginController extends BaseController{
 
+    public static final String LOGIN_FLAG = "logged_user";
 	@Autowired
 	private LoginService loginService;
 
-    //@FireAuthority(authorityTypes = AuthorityType.SALES_ORDER_DELETE, resultType= ResultTypeEnum.page)
+    private User getLoginUser(HttpSession session){
+        return (User)session.getAttribute(LOGIN_FLAG);
+    }
 	@RequestMapping(value="/user/login",method=RequestMethod.GET)
-	public String login(){
+	public String login(HttpSession session){
+        if(getLoginUser(session)!=null)
+        {
+            return "redirect:/user/home";
+        }
 		return "login";
 	}
 
-    //@FireAuthority(authorityTypes = {AuthorityType.SALES_ORDER_DELETE,AuthorityType.SALES_ORDER_CREATE}, resultType= ResultTypeEnum.page)
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
-	public String logon(String userName,String passWord){
-		User user = null;
-		try {
-			MessageDigest md5 = MessageDigest.getInstance("MD5");			
-			String encode = new String(md5.digest(passWord.getBytes("GBK")));
-			
-			user = loginService.getUser(userName, encode);
-		} catch (RuntimeException e) {
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public String logon(HttpSession session,String userName,String passWord){
+        if(getLoginUser(session)!=null)
+        {
+            return "redirect:/user/home";
+        }
+
+		User user = loginService.getUser(userName, passWord);
 		if(user!=null){
-			return "MyHome";
+            session.setAttribute(LOGIN_FLAG,user);
+			return "redirect:/user/home";
 		}else{
 			return "login";
 		}
 	}
 
-    //@FireAuthority(authorityTypes = {AuthorityType.WORKER}, resultType= ResultTypeEnum.page)
+    @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
 	@RequestMapping(value="/user/register",method=RequestMethod.POST)
 	public String register(User user){
 		if(null == user.getAuthority()){
-			user.setAuthority("000000");
+			user.setAuthority("100000");
 		}
 		if(!loginService.duplicateUser(user)){
 			loginService.addUser(user);
 			return "login";
 		}
-		return "MyHome";
+		return "redirect:/user/home";
 	}
+
+    @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/user/register",method=RequestMethod.GET)
+    public String registerPage(User user){
+        if(null == user.getAuthority()){
+            //user为null  这样使用 会抛出空指针异常
+            //user.setAuthority("000000");
+            return "register";
+        }
+        return "redirect:/user/home";
+    }
 
     @RequestMapping(value="/tip/noPermission")
     public String noPermission(){
         return "noPermission";
+    }
+
+    @RequestMapping(value="/user/logout")
+    public String logout(HttpSession session){
+        session.removeAttribute(LOGIN_FLAG);
+        return "redirect:/user/home";
     }
 }

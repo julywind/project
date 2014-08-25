@@ -5,12 +5,8 @@ package com.aokunsang.authority;
  */
 public enum AuthorityType{
     // 包含了枚举的中文名称, 枚举的索引值
-    WORKER("增删改查员工", 1),
-
-    SALES_ORDER_CREATE("创建订单", 6),
-    SALES_ORDER_FIND("查看订单", 7),
-    SALES_ORDER_MODIFY("修改订单", 8),
-    SALES_ORDER_DELETE("删除订单", 9),
+    USER_NORMAL("普通用户", 0),
+    USER_MANAGE("管理员", 1),
     ;
     private String name;
     private int index;
