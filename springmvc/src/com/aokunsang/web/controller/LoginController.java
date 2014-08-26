@@ -3,6 +3,7 @@
  */
 package com.aokunsang.web.controller;
 
+import com.aokunsang.ResultBean;
 import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.util.ResultTypeEnum;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.aokunsang.po.User;
 import com.aokunsang.service.LoginService;
 import com.aokunsang.web.BaseController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,62 +36,80 @@ public class LoginController extends BaseController{
         return (User)session.getAttribute(LOGIN_FLAG);
     }
 	@RequestMapping(value="/user/login",method=RequestMethod.GET)
-	public String login(HttpSession session){
+	public ModelAndView login(HttpSession session){
         if(getLoginUser(session)!=null)
         {
-            return "redirect:/user/home";
+            return new ModelAndView(new RedirectView("/user/home"),"result", getLoginUser(session));
         }
-		return "login";
+		return new ModelAndView("login", "result", new ResultBean(false,"请输入userName和passWord登录"));
 	}
 
+    @RequestMapping(value="/user/info",method=RequestMethod.GET)
+    public ModelAndView loginInfo(HttpSession session){
+        return new ModelAndView("login", "user", getLoginUser(session));
+    }
+
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
-	public String logon(HttpSession session,String userName,String passWord){
+	public ModelAndView logon(HttpSession session,String userName,String passWord){
         if(getLoginUser(session)!=null)
         {
-            return "redirect:/user/home";
+            return new ModelAndView(new RedirectView("/user/home"));
         }
 
 		User user = loginService.getUser(userName, passWord);
 		if(user!=null){
+            user.setPassWord("");
             session.setAttribute(LOGIN_FLAG,user);
-			return "redirect:/user/home";
+            return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"登录成功"));
 		}else{
-			return "login";
+            return new ModelAndView("login", "result", new ResultBean(false,"用户名或者密码错误"));
 		}
 	}
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/user/checkName",method=RequestMethod.POST)
+    public ModelAndView checkUserExist(User user){
+        if(null == user.getAuthority()){
+            user.setAuthority("100000");
+        }
+        if(!loginService.duplicateUser(user)){
+            return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"可以使用"));
+        }
+        return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(false,"<font color='red'>已存在</font>"));
+    }
+
+
+    @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
 	@RequestMapping(value="/user/register",method=RequestMethod.POST)
-	public String register(User user){
+	public ModelAndView register(User user){
 		if(null == user.getAuthority()){
 			user.setAuthority("100000");
 		}
 		if(!loginService.duplicateUser(user)){
 			loginService.addUser(user);
-			return "login";
+            return new ModelAndView(new RedirectView("/user/list"), "result", new ResultBean(true,"操作成功"));
 		}
-		return "redirect:/user/home";
+        return new ModelAndView(new RedirectView("/user/register"), "result", new ResultBean(false,"用户名已存在"));
 	}
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
     @RequestMapping(value="/user/register",method=RequestMethod.GET)
-    public String registerPage(User user){
+    public ModelAndView registerPage(User user){
         if(null == user.getAuthority()){
-            //user为null  这样使用 会抛出空指针异常
-            //user.setAuthority("000000");
-            return "register";
+            user.setAuthority("000000");
+            return new ModelAndView("register");
         }
-        return "redirect:/user/home";
+        return new ModelAndView("register", "result", new ResultBean(true,"您访问了登陆界面，无json数据"));
     }
 
     @RequestMapping(value="/tip/noPermission")
-    public String noPermission(){
-        return "noPermission";
+    public ModelAndView noPermission(){
+        return new ModelAndView("noPermission", "result", new ResultBean(false,"您无权访问此路径"));
     }
 
     @RequestMapping(value="/user/logout")
-    public String logout(HttpSession session){
+    public ModelAndView logout(HttpSession session){
         session.removeAttribute(LOGIN_FLAG);
-        return "redirect:/user/home";
+        return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"操作成功"));
     }
 }

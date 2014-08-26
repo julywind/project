@@ -16,9 +16,8 @@ public class User implements Serializable{
 	private Integer id;
 	private String userName;  //用户名
 	private String passWord;  //密码
-	private String firstName; 
+	private String firstName;
 	private String lastName;
-	private String birthday;  //生日
     private String phoneNumber;
     private String authority;
 	private Integer age;
@@ -93,30 +92,7 @@ public class User implements Serializable{
 	 * @param passWord the passWord to set
 	 */
 	public void setPassWord(String passWord) {
-		try {
-			MessageDigest md5 = MessageDigest.getInstance("MD5");			
-			String encode = new String(md5.digest(passWord.getBytes("GBK")));
-			this.passWord = encode;
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	/**
-	 * @return the birthday
-	 */
-	public String getBirthday() {
-		return birthday;
-	}
-	/**
-	 * @param birthday the birthday to set
-	 */
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
+        this.passWord = passWord;
 	}
 
     /**
