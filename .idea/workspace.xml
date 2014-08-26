@@ -26,11 +26,11 @@
       <file leaf-file-name="LoginController.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/web/controller/LoginController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="1976">
+            <state vertical-scroll-proportion="0.0" vertical-offset="337" max-vertical-offset="1995">
               <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
               <folding>
-                <element signature="e#1002#1003#0" expanded="true" />
-                <element signature="e#1063#1064#0" expanded="true" />
+                <element signature="e#1006#1007#0" expanded="true" />
+                <element signature="e#1067#1068#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -78,20 +78,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ResultBean.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/ResultBean.java">
+      <file leaf-file-name="JsonResultBean.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/JsonResultBean.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6051948" vertical-offset="52" max-vertical-offset="722">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.8025974" vertical-offset="52" max-vertical-offset="1026">
+              <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
               <folding>
-                <element signature="e#362#363#0" expanded="true" />
-                <element signature="e#391#392#0" expanded="true" />
-                <element signature="e#436#437#0" expanded="true" />
-                <element signature="e#472#473#0" expanded="true" />
-                <element signature="e#503#504#0" expanded="true" />
-                <element signature="e#530#531#0" expanded="true" />
-                <element signature="e#570#571#0" expanded="true" />
-                <element signature="e#602#603#0" expanded="true" />
+                <element signature="e#581#582#0" expanded="true" />
+                <element signature="e#610#611#0" expanded="true" />
+                <element signature="e#655#656#0" expanded="true" />
+                <element signature="e#691#692#0" expanded="true" />
+                <element signature="e#722#723#0" expanded="true" />
+                <element signature="e#749#750#0" expanded="true" />
+                <element signature="e#789#790#0" expanded="true" />
+                <element signature="e#821#822#0" expanded="true" />
+                <element signature="e#855#856#0" expanded="true" />
+                <element signature="e#888#889#0" expanded="true" />
+                <element signature="e#937#938#0" expanded="true" />
+                <element signature="e#981#982#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -150,6 +154,7 @@
         <option value="$PROJECT_DIR$/springmvc/src/com/aokunsang/service/impl/AlarmServiceImpl.java" />
         <option value="$PROJECT_DIR$/springmvc/src/com/aokunsang/web/controller/LoginController.java" />
         <option value="$PROJECT_DIR$/springmvc/src/com/aokunsang/ResultBean.java" />
+        <option value="$PROJECT_DIR$/springmvc/src/com/aokunsang/JsonResultBean.java" />
       </list>
     </option>
   </component>
@@ -270,80 +275,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aokunsang" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="springmvc" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aokunsang" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="springmvc" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aokunsang" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="web" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controller" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="springmvc" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aokunsang" />
-              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="po" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -832,12 +763,12 @@
       <workItem from="1407319992224" duration="278000" />
       <workItem from="1408974525743" duration="7248000" />
       <workItem from="1409056126816" duration="1669000" />
-      <workItem from="1409061408138" duration="10616000" />
+      <workItem from="1409061408138" duration="11069000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35143000" />
+    <option name="totallyTimeSpent" value="35596000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -933,8 +864,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="990" max-vertical-offset="1206">
           <caret line="55" column="0" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
           <folding>
-            <element signature="e#1002#1003#0" expanded="true" />
-            <element signature="e#1063#1064#0" expanded="true" />
+            <element signature="e#1006#1007#0" expanded="true" />
+            <element signature="e#1067#1068#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1302,8 +1233,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="318" max-vertical-offset="1976">
           <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
           <folding>
-            <element signature="e#1002#1003#0" expanded="true" />
-            <element signature="e#1063#1064#0" expanded="true" />
+            <element signature="e#1006#1007#0" expanded="true" />
+            <element signature="e#1067#1068#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1324,19 +1255,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/ResultBean.java">
+    <entry file="file://$PROJECT_DIR$/springmvc/src/com/aokunsang/JsonResultBean.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6051948" vertical-offset="52" max-vertical-offset="722">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.8025974" vertical-offset="52" max-vertical-offset="1026">
+          <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
           <folding>
-            <element signature="e#362#363#0" expanded="true" />
-            <element signature="e#391#392#0" expanded="true" />
-            <element signature="e#436#437#0" expanded="true" />
-            <element signature="e#472#473#0" expanded="true" />
-            <element signature="e#503#504#0" expanded="true" />
-            <element signature="e#530#531#0" expanded="true" />
-            <element signature="e#570#571#0" expanded="true" />
-            <element signature="e#602#603#0" expanded="true" />
+            <element signature="e#581#582#0" expanded="true" />
+            <element signature="e#610#611#0" expanded="true" />
+            <element signature="e#655#656#0" expanded="true" />
+            <element signature="e#691#692#0" expanded="true" />
+            <element signature="e#722#723#0" expanded="true" />
+            <element signature="e#749#750#0" expanded="true" />
+            <element signature="e#789#790#0" expanded="true" />
+            <element signature="e#821#822#0" expanded="true" />
+            <element signature="e#855#856#0" expanded="true" />
+            <element signature="e#888#889#0" expanded="true" />
+            <element signature="e#937#938#0" expanded="true" />
+            <element signature="e#981#982#0" expanded="true" />
           </folding>
         </state>
       </provider>

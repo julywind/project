@@ -3,7 +3,7 @@
  */
 package com.aokunsang.web.controller;
 
-import com.aokunsang.ResultBean;
+import com.aokunsang.JsonResultBean;
 import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.util.ResultTypeEnum;
@@ -41,7 +41,7 @@ public class LoginController extends BaseController{
         {
             return new ModelAndView(new RedirectView("/user/home"),"result", getLoginUser(session));
         }
-		return new ModelAndView("login", "result", new ResultBean(false,"请输入userName和passWord登录"));
+		return new ModelAndView("login", "result", new JsonResultBean(false,"请输入userName和passWord登录"));
 	}
 
     @RequestMapping(value="/user/info",method=RequestMethod.GET)
@@ -60,9 +60,9 @@ public class LoginController extends BaseController{
 		if(user!=null){
             user.setPassWord("");
             session.setAttribute(LOGIN_FLAG,user);
-            return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"登录成功"));
+            return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"登录成功"));
 		}else{
-            return new ModelAndView("login", "result", new ResultBean(false,"用户名或者密码错误"));
+            return new ModelAndView("login", "result", new JsonResultBean(false,"用户名或者密码错误"));
 		}
 	}
 
@@ -73,9 +73,9 @@ public class LoginController extends BaseController{
             user.setAuthority("100000");
         }
         if(!loginService.duplicateUser(user)){
-            return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"可以使用"));
+            return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"可以使用"));
         }
-        return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(false,"<font color='red'>已存在</font>"));
+        return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(false,"<font color='red'>已存在</font>"));
     }
 
 
@@ -87,9 +87,9 @@ public class LoginController extends BaseController{
 		}
 		if(!loginService.duplicateUser(user)){
 			loginService.addUser(user);
-            return new ModelAndView(new RedirectView("/user/list"), "result", new ResultBean(true,"操作成功"));
+            return new ModelAndView(new RedirectView("/user/list"), "result", new JsonResultBean(true,"操作成功"));
 		}
-        return new ModelAndView(new RedirectView("/user/register"), "result", new ResultBean(false,"用户名已存在"));
+        return new ModelAndView(new RedirectView("/user/register"), "result", new JsonResultBean(false,"用户名已存在"));
 	}
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
@@ -99,17 +99,17 @@ public class LoginController extends BaseController{
             user.setAuthority("000000");
             return new ModelAndView("register");
         }
-        return new ModelAndView("register", "result", new ResultBean(true,"您访问了登陆界面，无json数据"));
+        return new ModelAndView("register", "result", new JsonResultBean(true,"您访问了登陆界面，无json数据"));
     }
 
     @RequestMapping(value="/tip/noPermission")
     public ModelAndView noPermission(){
-        return new ModelAndView("noPermission", "result", new ResultBean(false,"您无权访问此路径"));
+        return new ModelAndView("noPermission", "result", new JsonResultBean(false,"您无权访问此路径"));
     }
 
     @RequestMapping(value="/user/logout")
     public ModelAndView logout(HttpSession session){
         session.removeAttribute(LOGIN_FLAG);
-        return new ModelAndView(new RedirectView("/user/home"), "result", new ResultBean(true,"操作成功"));
+        return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"操作成功"));
     }
 }
