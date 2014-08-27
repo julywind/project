@@ -4,15 +4,14 @@
 package com.aokunsang.po;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.*;
 /**
  * @author tushen
  * @date Nov 4, 2011
  */
 public class User implements Serializable{
 
-	
+    public static final String TABLE_NAME="user";
+
 	private Integer id;
 	private String userName;  //用户名
 	private String passWord;  //密码

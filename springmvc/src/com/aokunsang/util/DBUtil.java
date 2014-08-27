@@ -66,6 +66,7 @@ public class DBUtil{
 								obj);
 		} catch (Exception e) {
 			log.info(e);
+            e.printStackTrace();
             return null;
 			//throw new DaoException("数据库操作失败！",e);
 		}

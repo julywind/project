@@ -7,6 +7,7 @@ import com.aokunsang.JsonResultBean;
 import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.util.ResultTypeEnum;
+import com.aokunsang.util.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class LoginController extends BaseController{
 		}
 	}
 
-    @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
+    @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE})
     @RequestMapping(value="/user/checkName",method=RequestMethod.POST)
     public ModelAndView checkUserExist(User user){
         if(null == user.getAuthority()){
@@ -111,5 +112,23 @@ public class LoginController extends BaseController{
     public ModelAndView logout(HttpSession session){
         session.removeAttribute(LOGIN_FLAG);
         return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"操作成功"));
+    }
+
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/user/list")
+    public ModelAndView getUsers(Integer offset,Integer limit,String whereCondition){
+        String sql = "select %s from "+User.TABLE_NAME+" "+ (TextUtil.isEmpty(whereCondition)?"":(" where "+whereCondition));
+        String sql2 = sql;
+        if(limit!=null&&limit>=0)
+        {
+            sql2 += " limit "+limit;
+        }
+        if(offset!=null&&offset>=0)
+        {
+            sql2 += " offset "+offset;
+        }
+        return new ModelAndView("user/list", "result", new JsonResultBean(true,
+                loginService.getCount(String.format(sql,"count(*) as totalCount"), null),
+                loginService.query(String.format(sql2,"*"), null)));
     }
 }

@@ -3,12 +3,15 @@
  */
 package com.aokunsang.service.impl;
 
+import com.aokunsang.CountBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aokunsang.dao.BaseDao;
 import com.aokunsang.po.User;
 import com.aokunsang.service.LoginService;
+
+import java.util.List;
 
 /**
  * @author tushen
@@ -41,4 +44,15 @@ public class LoginServiceImpl implements LoginService {
 	public void addUser(User user) {
 		baseDao.saveOrUpdateObject(addUser, user);
 	}
+    @Override
+    public List<User> query(String sql,String[] params)
+    {
+        return baseDao.getObjList(sql,User.class,params);
+    }
+
+    @Override
+    public Integer getCount(String sql,String[] params)
+    {
+        return baseDao.getObject(sql, CountBean.class, params).getTotalCount();
+    }
 }
