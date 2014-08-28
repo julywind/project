@@ -15,7 +15,11 @@
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
-  <servlet>
+  <listener>
+    <listener-class>com.aokunsang.ftp.listener.FtpServerListener</listener-class>
+  </listener>
+
+    <servlet>
   	<servlet-name>spring-mvc</servlet-name>
   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
   	<init-param>

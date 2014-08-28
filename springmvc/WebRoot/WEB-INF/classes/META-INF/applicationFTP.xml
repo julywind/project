@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server xmlns="http://mina.apache.org/ftpserver/spring/v1"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+	        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	        http://mina.apache.org/ftpserver/spring/v1 http://mina.apache.org/ftpserver/ftpserver-1.0.xsd"
+        id="ftpServer"
+        max-logins="500"
+        anon-enabled="true"
+        max-anon-logins="123"
+        max-login-failures="124"
+        login-failure-delay="125">
+
+
+    <listeners>
+        <nio-listener name="default" port="2121">
+            <ssl>
+                <keystore file="./res/ftpserver.jks" password="password" />
+            </ssl>
+            <data-connection idle-timeout="60">
+                <active enabled="true" local-address="1.2.3.4" local-port="2323"
+                        ip-check="true" />
+                <passive ports="123-125" address="1.2.3.4" external-address="1.2.3.4" />
+            </data-connection>
+            <blacklist>1.2.3.0/16, 1.2.4.0/16, 1.2.3.4</blacklist>
+        </nio-listener>
+    </listeners>
+
+    <ftplets>
+        <ftplet name="ftplet1">
+            <beans:bean class="com.aokunsang.service.impl.FtpService">
+                <beans:property name="foo" value="123" />
+            </beans:bean>
+        </ftplet>
+    </ftplets>
+    <!-- The user manager, choose one -->
+    <file-user-manager file="./res/conf/users.properties"
+                       encrypt-passwords="true" />
+    <db-user-manager>
+        <data-source>
+            <beans:bean class="org.apache.commons.dbcp.BasicDataSource">
+                <beans:property name="driverClassName" value="${mysql.driverclass}" />
+                <beans:property name="url" value="${mysql.jdbcurl}" />
+                <beans:property name="username" value="${mysql.user}" />
+                <beans:property name="password" value="${mysql.password}" />
+                <beans:property name="maxActive" value="${mysql.maxActive}" />
+                <beans:property name="poolPreparedStatements" value="true" />
+                <beans:property name="minEvictableIdleTimeMillis" value="5" />
+                <beans:property name="minIdle" value="2" />
+                <beans:property name="initialSize" value="3" />
+                <beans:property name="testOnBorrow" value="true" />
+                <beans:property name="testWhileIdle" value="true" />
+                <beans:property name="testOnReturn" value="true" />
+                <beans:property name="removeAbandoned" value="true" />
+                <beans:property name="removeAbandonedTimeout" value="300" />
+            </beans:bean>
+        </data-source>
+        <insert-user>INSERT INTO FTP_USER (userid, userpassword,
+            homedirectory, enableflag, writepermission, idletime, uploadrate,
+            downloadrate) VALUES ('{userid}', '{userpassword}',
+            '{homedirectory}','{enableflag}',
+            '{writepermission}', {idletime}, {uploadrate},{downloadrate})</insert-user>
+        <update-user>UPDATE FTP_USER SET
+            userpassword='{userpassword}',homedirectory=
+            '{homedirectory}',enableflag={enableflag},writepermission={writepermission},idletime={idletime}
+            ,uploadrate={uploadrate},downloadrate={downloadrate}
+            WHERE userid='{userid}'
+        </update-user>
+        <delete-user>DELETE FROM FTP_USER WHERE userid = '{userid}'</delete-user>
+        <select-user>SELECT userid, userpassword, homedirectory,
+            enableflag, writepermission, idletime, maxloginnumber,maxloginperip,uploadrate,
+            downloadrate
+            FROM FTP_USER WHERE userid = '{userid}'</select-user>
+        <select-all-users>SELECT userid FROM FTP_USER ORDER BY userid</select-all-users>
+        <is-admin>SELECT userid FROM FTP_USER WHERE userid='{userid}' AND
+            userid='admin'
+        </is-admin>
+        <authenticate>SELECT userpassword from FTP_USER WHERE
+            userid='{userid}'</authenticate>
+    </db-user-manager>
+</server>
