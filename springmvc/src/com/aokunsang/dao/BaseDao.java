@@ -37,6 +37,15 @@ public interface BaseDao {
 	 * @return
 	 */
 	<T extends Serializable> T getObject(String sql,Class<T> clazz,Object[] objs);
+
+    /**
+     * 查询数量
+     * @param <T>
+     * @param sql
+     * @param objs
+     * @return
+     */
+    Integer getForInt(String sql,Object... objs);
 	
 	/**
 	 * 查询一个Map集合

@@ -3,12 +3,14 @@
  */
 package com.aokunsang.web.controller;
 
+import com.aokunsang.JsonResultBean;
 import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.po.Alarm;
 import com.aokunsang.po.User;
 import com.aokunsang.service.AlarmService;
 import com.aokunsang.util.ResultTypeEnum;
+import com.aokunsang.util.TextUtil;
 import com.aokunsang.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +32,19 @@ public class AlarmController extends BaseController{
 	private AlarmService alarmService;
 
 	@RequestMapping(value="/alarm/list",method=RequestMethod.GET)
-	public String alarmList(Alarm alarm){
-        alarmService.getAlarm(alarm);
-		return "login";
+	public ModelAndView alarmList(Integer offset,Integer limit,String whereCondition){
+        String sql = "select %s from alarm "+ (TextUtil.isEmpty(whereCondition)?"":(" where "+whereCondition));
+        String sql2 = sql;
+        if(limit!=null&&limit>=0)
+        {
+            sql2 += " limit "+limit;
+        }
+        if(offset!=null&&offset>=0)
+        {
+            sql2 += " offset "+offset;
+        }
+        return new ModelAndView("alarm/list", "result", new JsonResultBean(true,
+                alarmService.getCount(String.format(sql,"count(*) as totalCount")),
+                alarmService.query(String.format(sql2,"*"), null)));
 	}
 }

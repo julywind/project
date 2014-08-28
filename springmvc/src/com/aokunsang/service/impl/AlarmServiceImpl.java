@@ -50,4 +50,10 @@ public class AlarmServiceImpl implements AlarmService {
     public List<Alarm> query(String sql,String[] params) {
         return baseDao.getObjList(sql,Alarm.class,params);
     }
+
+    @Override
+    public int getCount(String sql,String... params)
+    {
+        return baseDao.getForInt(sql, params);
+    }
 }

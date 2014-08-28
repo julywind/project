@@ -40,7 +40,7 @@ public class LoginController extends BaseController{
 	public ModelAndView login(HttpSession session){
         if(getLoginUser(session)!=null)
         {
-            return new ModelAndView(new RedirectView("/user/home"),"result", getLoginUser(session));
+            return new ModelAndView(new RedirectView("/user/home",true),"result", getLoginUser(session));
         }
 		return new ModelAndView("login", "result", new JsonResultBean(false,"请输入userName和passWord登录"));
 	}
@@ -54,14 +54,14 @@ public class LoginController extends BaseController{
 	public ModelAndView logon(HttpSession session,String userName,String passWord){
         if(getLoginUser(session)!=null)
         {
-            return new ModelAndView(new RedirectView("/user/home"));
+            return new ModelAndView(new RedirectView("/user/home",true));
         }
 
 		User user = loginService.getUser(userName, passWord);
 		if(user!=null){
             user.setPassWord("");
             session.setAttribute(LOGIN_FLAG,user);
-            return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"登录成功"));
+            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"登录成功"));
 		}else{
             return new ModelAndView("login", "result", new JsonResultBean(false,"用户名或者密码错误"));
 		}
@@ -74,9 +74,9 @@ public class LoginController extends BaseController{
             user.setAuthority("100000");
         }
         if(!loginService.duplicateUser(user)){
-            return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"可以使用"));
+            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"可以使用"));
         }
-        return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(false,"<font color='red'>已存在</font>"));
+        return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false,"<font color='red'>已存在</font>"));
     }
 
 
@@ -88,9 +88,9 @@ public class LoginController extends BaseController{
 		}
 		if(!loginService.duplicateUser(user)){
 			loginService.addUser(user);
-            return new ModelAndView(new RedirectView("/user/list"), "result", new JsonResultBean(true,"操作成功"));
+            return new ModelAndView(new RedirectView("/user/list",true), "result", new JsonResultBean(true,"操作成功"));
 		}
-        return new ModelAndView(new RedirectView("/user/register"), "result", new JsonResultBean(false,"用户名已存在"));
+        return new ModelAndView(new RedirectView("/user/register",true), "result", new JsonResultBean(false,"用户名已存在"));
 	}
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
@@ -111,7 +111,7 @@ public class LoginController extends BaseController{
     @RequestMapping(value="/user/logout")
     public ModelAndView logout(HttpSession session){
         session.removeAttribute(LOGIN_FLAG);
-        return new ModelAndView(new RedirectView("/user/home"), "result", new JsonResultBean(true,"操作成功"));
+        return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"操作成功"));
     }
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
@@ -128,7 +128,7 @@ public class LoginController extends BaseController{
             sql2 += " offset "+offset;
         }
         return new ModelAndView("user/list", "result", new JsonResultBean(true,
-                loginService.getCount(String.format(sql,"count(*) as totalCount"), null),
+                loginService.getCount(String.format(sql,"count(*) as totalCount")),
                 loginService.query(String.format(sql2,"*"), null)));
     }
 }

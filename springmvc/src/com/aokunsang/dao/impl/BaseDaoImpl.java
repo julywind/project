@@ -58,4 +58,9 @@ public class BaseDaoImpl implements BaseDao {
 	public <T extends Serializable> T getObject(String sql,Class<T> clazz,Object[] objs) {
 		return (T)util.getObject(sql, clazz, objs);
 	}
+
+    @Override
+    public Integer getForInt(String sql, Object... objs) {
+        return util.getForInt(sql, objs);
+    }
 }

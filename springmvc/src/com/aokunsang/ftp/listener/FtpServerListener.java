@@ -25,17 +25,16 @@ public class FtpServerListener implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent contextEvent) {
         System.out.println("Starting FtpServer");
-        /*try {
+
         WebApplicationContext ctx = WebApplicationContextUtils.getWebApplicationContext(contextEvent.getServletContext());
         DefaultFtpServer server = (DefaultFtpServer) ctx.getBean("ftpServer");
-        System.out.println("FtpServer started1");
         contextEvent.getServletContext().setAttribute(FTPSERVER_CONTEXT_NAME, server);
-
+        try {
             server.start();
             System.out.println("FtpServer started");
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to start FtpServer", e);
-        }*/
+        }
     }
 }

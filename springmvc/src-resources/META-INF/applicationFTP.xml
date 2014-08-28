@@ -14,7 +14,7 @@
 
 
     <listeners>
-        <nio-listener name="default" port="2121">
+        <nio-listener name="default" port="21">
             <ssl>
                 <keystore file="./res/ftpserver.jks" password="password" />
             </ssl>
@@ -30,14 +30,14 @@
     <ftplets>
         <ftplet name="ftplet1">
             <beans:bean class="com.aokunsang.service.impl.FtpService">
-                <beans:property name="foo" value="123" />
+                <!--<beans:property name="foo" value="123" />-->
             </beans:bean>
         </ftplet>
     </ftplets>
     <!-- The user manager, choose one -->
-    <file-user-manager file="./res/conf/users.properties"
-                       encrypt-passwords="true" />
-    <db-user-manager>
+    <!--<file-user-manager file="./res/conf/users.properties"
+                       encrypt-passwords="true" />-->
+    <db-user-manager encrypt-passwords="md5">
         <data-source>
             <beans:bean class="org.apache.commons.dbcp.BasicDataSource">
                 <beans:property name="driverClassName" value="${mysql.driverclass}" />
@@ -87,11 +87,11 @@
         Use this section to define custom commands. Custom commands can also
         override already existing commands
     -->
-    <commands use-default="false">
+    <!--<commands use-default="false">
         <command name="MYHELP">
             <beans:bean class="org.apache.ftpserver.examples.MYHELP" />
         </command>
-    </commands>
+    </commands>-->
     <!-- Define the available languages -->
-    <messages languages="se, no ,da" />
+    <messages languages="en, zh-tw, " />
 </server>

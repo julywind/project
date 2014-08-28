@@ -168,6 +168,24 @@ public class DBUtil{
 	}
 
     /**
+     * 编辑操作(增删改查都可以)
+     * @param sql
+     * @param obj
+     * @return
+     */
+    public int getForInt(String sql,Object... obj){
+        int index = 0;
+        try {
+            index = simpleJdbcTemplate.queryForInt(sql,obj);
+        } catch (DataAccessException e) {
+            log.info(e);
+            return 0;
+            //throw new DaoException("数据库操作失败！",e);
+        }
+        return index;
+    }
+
+    /**
 	 * @param simpleJdbcTemplate the simpleJdbcTemplate to set
 	 */
 	@Resource(name="dataSource")

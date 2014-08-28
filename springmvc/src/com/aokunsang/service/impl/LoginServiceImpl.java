@@ -3,7 +3,6 @@
  */
 package com.aokunsang.service.impl;
 
-import com.aokunsang.CountBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +50,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Integer getCount(String sql,String[] params)
+    public Integer getCount(String sql,String... params)
     {
-        return baseDao.getObject(sql, CountBean.class, params).getTotalCount();
+        return baseDao.getForInt(sql, params);
     }
 }

@@ -16,5 +16,5 @@ public interface LoginService {
 	public boolean duplicateUser(User user) ;
 	public void addUser(User user);
     public List<User> query(String sql,String[] params);
-    public Integer getCount(String sql,String[] params);
+    public Integer getCount(String sql,String... params);
 }
