@@ -44,21 +44,21 @@
 
             <ul class="am-list am-list-static">
                 <c:choose>
-                <c:when test="${empty data}">
+                <c:when test="${empty result.data}">
                     <div class="am-panel-bd">
                         无数据
                     </div>
                 </c:when>
 
                 <c:otherwise>
-                    <c:forEach var="list" items="data" varStatus="status">
-                        <li >${status.count}|${status.genDate}</li>
+                    <c:forEach var="list" items="${result.data}" varStatus="status">
+                        <li >${status.count}|${list.userName}</li>
                     </c:forEach>
                 </c:otherwise>
                 </c:choose>
 
             </ul>
-            <div class="am-panel-footer">这里写点儿啥呢...</div>
+            <div class="am-panel-footer">Footer写点儿啥呢...</div>
         </div>
     </div>
 </div>

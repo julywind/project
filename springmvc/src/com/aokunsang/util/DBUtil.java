@@ -61,9 +61,7 @@ public class DBUtil{
 		
 		List<?> array = null;
 		try {
-			array =  simpleJdbcTemplate.queryForList(sql,
-								ParameterizedBeanPropertyRowMapper.newInstance(className),
-								obj);
+            array =  this.simpleJdbcTemplate.getJdbcOperations().query(sql, obj, new BeanPropertyRowMapper(className));
 		} catch (Exception e) {
 			log.info(e);
             e.printStackTrace();
@@ -168,8 +166,8 @@ public class DBUtil{
 		}
 		return index;
 	}
-	
-	/**
+
+    /**
 	 * @param simpleJdbcTemplate the simpleJdbcTemplate to set
 	 */
 	@Resource(name="dataSource")
