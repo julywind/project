@@ -22,9 +22,9 @@
 </style>
 
 <header class="am-topbar head">
-    <%--<h1 class="am-topbar-brand">
-        <a href="#">工地安全信息管理系统</a>
-    </h1>--%>
+    <h1 class="am-topbar-brand">
+        <a href="#">导航>></a>
+    </h1>
 
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-secondary am-show-sm-only"
             data-am-collapse="{target: '#collapse-head'}"><span class="am-sr-only">导航切换</span> <span
