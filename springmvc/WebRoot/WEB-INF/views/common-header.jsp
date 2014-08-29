@@ -35,6 +35,7 @@
             <li ${param.active_item=='home'?'class="am-active"':''}><a href="${ctx}/">首页</a></li>
             <li ${param.active_item=='alarm'?'class="am-active"':''}><a href="${ctx}/alarm/list.html">警报</a></li>
             <li ${param.active_item=='user'?'class="am-active"':''}><a href="${ctx}/user/list.html?offset=0&limit=20">用户</a></li>
+            <li ${param.active_item=='ftpuser'?'class="am-active"':''}><a href="${ctx}/ftp/list.html?offset=0&limit=20">FTP账号</a></li>
             <%--<li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     下拉菜单 <span class="am-icon-caret-down"></span>
@@ -55,7 +56,46 @@
             <a href="${ctx}/user/register.html" class="am-btn am-btn-link am-topbar-btn am-btn-sm" role="button"><span class="am-icon-user"></span> 添加用户</a>
         </div>
         <div class="am-topbar-right">
-            <a href="${ctx}/user/register.html" class="am-btn am-btn-link am-topbar-btn am-btn-sm" role="button"><span class="am-icon-pencil"></span> 修改密码</a>
+            <a data-am-modal="{target: '#modal-update-password'}" class="am-btn am-btn-link am-topbar-btn am-btn-sm" role="button"><span class="am-icon-pencil"></span> 修改密码</a>
         </div>
     </div>
+
+    <%--<div class="am-popup" id="modal-update-password">
+        <div class="am-popup-inner">
+            <div class="col-md-8 col-sm-centered">
+                <form class="am-form">
+                    <fieldset class="am-form-set">
+                        <input type="text" placeholder="取个名字">
+                        <input type="text" placeholder="设个密码">
+                        <input type="email" placeholder="填下邮箱">
+                    </fieldset>
+                    <button type="submit" class="am-btn am-btn-primary am-btn-block">注册个账号</button>
+                </form>
+            </div>
+        </div>
+    </div>--%>
+
+
 </header>
+<div class="am-modal am-modal-prompt" tabindex="-1" id="modal-update-password">
+    <div class="am-modal-dialog">
+        <div class="am-modal-hd">修改密码</div>
+        <div class="am-modal-bd">
+            <form class="am-form" action="${ctx}/user/updatePasswd" method="post">
+                <fieldset class="am-form-set">
+                    <input type="hidden" name="id" value="${sessionScope.logged_user.id}"/>
+                    <input type="text" class="am-form-field" name="userName" value="${sessionScope.logged_user.userName}" readonly/>
+                    <input type="password" name="passWord" required="true" placeholder="原密码">
+                    <input type="password" name="newPassword" required="true" placeholder="新密码">
+                    <input type="password" name="rePassword" required="true" placeholder="重复新密码">
+                </fieldset>
+                <button type="submit" class="am-btn am-btn-primary am-btn-block" data-am-modal-cancel>提交</button>
+            </form>
+        </div>
+        <%--<div class="am-modal-footer">
+            <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+            <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+        </div>--%>
+
+    </div>
+</div>

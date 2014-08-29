@@ -31,7 +31,7 @@
 <body class="head-fixed">
 
 <jsp:include page="../common-header.jsp">
-    <jsp:param name="active_item" value="alarm"/>
+    <jsp:param name="active_item" value="ftpuser"/>
 </jsp:include>
 
 <div class="detail">
@@ -39,7 +39,7 @@
 
         <div class="am-panel am-panel-default">
             <div class="am-panel-hd">
-                <h3 class="am-panel-title">警报列表</h3>
+                <h3 class="am-panel-title">FTP用户列表</h3>
             </div>
 
             <ul class="am-list am-list-static">
@@ -52,7 +52,7 @@
 
                 <c:otherwise>
                     <c:forEach var="list" items="${result.data}" varStatus="status">
-                        <li >${status.count}|${list.genDate}</li>
+                        <li >${status.count}|${list.userId}|${list.homedirectory}</li>
                     </c:forEach>
                 </c:otherwise>
                 </c:choose>

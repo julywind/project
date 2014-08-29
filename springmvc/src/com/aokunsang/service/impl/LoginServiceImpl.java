@@ -23,12 +23,19 @@ public class LoginServiceImpl implements LoginService {
 	private BaseDao baseDao;
 	static String addUser = "insert into user(username,password,first_name,last_name,phone_number,authority,age) values(:userName,md5(:passWord),:firstName,:lastName,:phoneNumber,:authority,:age);";
 	static String getUser = "select * from user where username = ? and password = md5(?)";
+    static String getUserFromId = "select * from user where id=?";
 	static String duplicateUser = "select * from user where username = ? ";
+    static String updatePasswd = "update user set passWord=md5(?) where id=?";
 	@Override
 	public User getUser(String userName, String password) {
 		User user = baseDao.getObject(getUser, User.class, new Object[]{userName,password});
 		return user;
 	}
+
+    @Override
+    public User getUser(User user) {
+        return baseDao.getObject(getUserFromId, User.class, new Object[]{String.valueOf(user.getId())});
+    }
 	
 	@Override
 	public boolean duplicateUser(User user){
@@ -50,8 +57,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Integer getCount(String sql,String... params)
+    public Integer getCount(String sql,Object... params)
     {
         return baseDao.getForInt(sql, params);
+    }
+
+    @Override
+    public Integer updatePasswd(User user)
+    {
+        return baseDao.editObject(updatePasswd, new Object[]{user.getPassWord(),user.getId()});
     }
 }

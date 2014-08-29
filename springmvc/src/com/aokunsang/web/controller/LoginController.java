@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.soap.Text;
 
 /**
  * 登陆方法
@@ -130,5 +131,34 @@ public class LoginController extends BaseController{
         return new ModelAndView("user/list", "result", new JsonResultBean(true,
                 loginService.getCount(String.format(sql,"count(*) as totalCount")),
                 loginService.query(String.format(sql2,"*"), null)));
+    }
+
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/user/updatePasswd",method=RequestMethod.GET)
+    public ModelAndView showUpdatePassWd(User user){
+        return new ModelAndView("user/update_passwd","result",new JsonResultBean(true,user));
+    }
+
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/user/updatePasswd",method=RequestMethod.POST)
+    public ModelAndView updatePassWd(User user,String newPassword,String rePassword,HttpSession session) {
+
+        if(TextUtil.isEmpty(newPassword) || TextUtil.isEmpty(rePassword) || !newPassword.equals(rePassword))
+        {
+            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "两次密码输入不相同"));
+        }
+        User old_user = loginService.getUser(user.getUserName(), user.getPassWord());
+        if (old_user == null) {
+            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "原密码不正确"));
+        } else {
+            old_user.setPassWord(newPassword);
+            int result=loginService.updatePasswd(old_user);
+            if(result>0)
+                return logout(session);/*new ModelAndView("user/update_passwd", "result", new JsonResultBean(true, "操作成功"));*/
+            else
+            {
+                return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "修改失败"));
+            }
+        }
     }
 }
