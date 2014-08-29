@@ -16,7 +16,7 @@ public interface AlarmService {
 
 	public Alarm getAlarm(Alarm alarm);
     public void addAlarm(Alarm alarm);
-	public boolean deleteAlarm(User user);
+	public boolean deleteAlarm(Alarm alarm);
     public boolean deleteAlarm(String ids) ;
 	public List<Alarm> query(String sql,String[] params);
     public int getCount(String sql,String... params);

@@ -21,7 +21,7 @@ public class AlarmServiceImpl implements AlarmService {
 
 	@Autowired
 	private BaseDao baseDao;
-	static String addAlarm = "insert into alarm(file_name,tag,gen_date) values(:fileName,:tag,:genDate)";
+	static String addAlarm = "insert into alarm(file_name,user_name,gen_date) values(:fileName,:userName,:genDate)";
 	static String getAlarm = "select * from alarm where id = ? ";
     static String deleteAlarm = "delete from alarm where id = ? ";
     static String deleteAlarms = "delete from alarm where id in (?) ";
@@ -37,8 +37,8 @@ public class AlarmServiceImpl implements AlarmService {
     }
 
     @Override
-    public boolean deleteAlarm(User user) {
-        return baseDao.editObject(deleteAlarm, new String[]{String.valueOf(user.getId())})>0;
+    public boolean deleteAlarm(Alarm alarm) {
+        return baseDao.editObject(deleteAlarm, new String[]{String.valueOf(alarm.getId())})>0;
     }
 
     @Override

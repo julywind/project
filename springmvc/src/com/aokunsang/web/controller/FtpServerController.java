@@ -3,8 +3,14 @@
  */
 package com.aokunsang.web.controller;
 
+import com.aokunsang.JsonResultBean;
+import com.aokunsang.authority.AuthorityType;
+import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.ftp.listener.FtpServerListener;
 import com.aokunsang.service.AlarmService;
+import com.aokunsang.service.FtpUserService;
+import com.aokunsang.util.ResultTypeEnum;
+import com.aokunsang.util.TextUtil;
 import com.aokunsang.web.BaseController;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.ftpserver.FtpServer;
@@ -20,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -34,7 +41,7 @@ import java.util.List;
 public class FtpServerController extends BaseController{
 
 	@Autowired
-	private AlarmService alarmService;
+	private FtpUserService ftpUserService;
 
 	@RequestMapping(value="/ftp/start")
     /**
@@ -122,7 +129,7 @@ public class FtpServerController extends BaseController{
             UserFactory userFact = new UserFactory();
             userFact.setName(userName);
             userFact.setPassword(psw);
-            userFact.setHomeDirectory("/home/myftpPath");
+            userFact.setHomeDirectory("/"+userName);
             userFact.setMaxIdleTime(600000);//10分钟无操作自动断开连接
             List<Authority> alist = new ArrayList<Authority>();
             Authority a = new WritePermission();//写权限
@@ -166,7 +173,21 @@ public class FtpServerController extends BaseController{
         }
     }
 
-//删除用户
-
-
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)
+    @RequestMapping(value="/ftp/list")
+    public ModelAndView getUsers(Integer offset,Integer limit,String whereCondition){
+        String sql = "select %s from FTP_USER "+ (TextUtil.isEmpty(whereCondition)?"":(" where "+whereCondition));
+        String sql2 = sql;
+        if(limit!=null&&limit>=0)
+        {
+            sql2 += " limit "+limit;
+        }
+        if(offset!=null&&offset>=0)
+        {
+            sql2 += " offset "+offset;
+        }
+        return new ModelAndView("ftp/list", "result", new JsonResultBean(true,
+                ftpUserService.getCount(String.format(sql,"count(*) as totalCount")),
+                ftpUserService.query(String.format(sql2,"*"), null)));
+    }
 }

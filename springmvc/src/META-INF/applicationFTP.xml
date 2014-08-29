@@ -19,9 +19,9 @@
                 <keystore file="./res/ftpserver.jks" password="password" />
             </ssl>
             <data-connection idle-timeout="60">
-                <active enabled="true" local-address="1.2.3.4" local-port="2323"
+                <active enabled="true" local-address="127.0.0.1" local-port="2323"
                         ip-check="true" />
-                <passive ports="123-125" address="1.2.3.4" external-address="1.2.3.4" />
+                <passive ports="123-125" address="127.0.0.1" external-address="127.0.0.1" />
             </data-connection>
             <blacklist>1.2.3.0/16, 1.2.4.0/16, 1.2.3.4</blacklist>
         </nio-listener>

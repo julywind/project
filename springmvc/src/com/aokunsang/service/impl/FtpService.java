@@ -1,14 +1,23 @@
 package com.aokunsang.service.impl;
 
+import com.aokunsang.po.Alarm;
+import com.aokunsang.service.AlarmService;
 import org.apache.ftpserver.ftplet.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
 public class FtpService extends DefaultFtplet {
+
+    @Autowired
+    private AlarmService alarmService;
+
     @Override
     public FtpletResult onUploadEnd(FtpSession session, FtpRequest request)
             throws FtpException, IOException {
-        return super.onUploadStart(session, request);
+        //session.getUser().getName();
+        //alarmService.addAlarm(new Alarm());
+        return super.onUploadEnd(session, request);
     }
 
     @Override

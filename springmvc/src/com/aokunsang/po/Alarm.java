@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Alarm implements Serializable{
 	private Integer id;
-	private String tag;  //备注
+	private String userName;  //备注
 	private String fileName; //文件路径
     private long genDate=System.currentTimeMillis(); //时间戳
 	/**
@@ -38,12 +38,12 @@ public class Alarm implements Serializable{
         this.genDate = timeStamp;
     }
 
-    public String getTag() {
-        return tag;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFileName() {
