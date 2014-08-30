@@ -5,6 +5,7 @@ import com.aokunsang.service.AlarmService;
 import org.apache.ftpserver.ftplet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.io.IOException;
 
 public class FtpService extends DefaultFtplet {
@@ -15,8 +16,21 @@ public class FtpService extends DefaultFtplet {
     @Override
     public FtpletResult onUploadEnd(FtpSession session, FtpRequest request)
             throws FtpException, IOException {
-        //session.getUser().getName();
-        //alarmService.addAlarm(new Alarm());
+        if(session!=null && session.isLoggedIn())
+        {
+            User ftpUser = session.getUser();
+            Alarm alarm = new Alarm();
+            alarm.setUserName(ftpUser.getName());
+            String fileName = ftpUser.getHomeDirectory();
+            if(!fileName.endsWith("/"))
+            {
+                fileName+="/";
+            }
+            fileName+=request.getArgument();
+            alarm.setFileName(fileName);
+            alarm.setGenDate(System.currentTimeMillis());
+            alarmService.addAlarm(alarm);
+        }
         return super.onUploadEnd(session, request);
     }
 
