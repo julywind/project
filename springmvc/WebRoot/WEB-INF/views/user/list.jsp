@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -42,23 +43,50 @@
                 <h3 class="am-panel-title">用户列表</h3>
             </div>
 
-            <ul class="am-list am-list-static">
-                <c:choose>
+            <c:choose>
                 <c:when test="${empty result.data}">
-                    <div class="am-panel-bd">
-                        无数据
-                    </div>
+                    <ul class="am-list am-list-static">
+                        <div class="am-panel-bd">
+                            无数据
+                        </div>
+                    </ul>
                 </c:when>
-
                 <c:otherwise>
-                    <c:forEach var="list" items="${result.data}" varStatus="status">
-                        <li >${status.count}|${list.userName}</li>
-                    </c:forEach>
+                    <table class="am-table am-table-bd am-table-bdrs am-table-striped am-table-hover">
+                        <thead align="center">
+                        <tr>
+                            <th>序号</th>
+                            <th>用户名</th>
+                            <th>姓</th>
+                            <th>名</th>
+                            <th>年龄</th>
+                            <th>电话号码</th>
+                            <th>登陆权限</th>
+                            <th>管理员权限</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="list" items="${result.data}" varStatus="status">
+                            <tr>
+                                <td align="center">${status.count}</td>
+                                <td align="center">${list.userName}</td>
+                                <td align="center">${list.firstName}kb/s</td>
+                                <td align="center">${list.lastName}</td>
+                                <td align="center">${list.phoneNumber}</td>
+                                <td align="center">
+                                    ${fn:substring(list.authority,0,1)=="1"?"有":"无"}
+                                </td>
+                                <td align="center">
+                                        ${fn:substring(list.authority,1,2)=="1"?"有":"无"}
+                                </td>
+                                <td align="center">${list.age}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </c:otherwise>
-                </c:choose>
-
-            </ul>
-            <div class="am-panel-footer">Footer写点儿啥呢...</div>
+            </c:choose>
+            <jsp:include page="../pager-footer.jsp"/>
         </div>
     </div>
 </div>

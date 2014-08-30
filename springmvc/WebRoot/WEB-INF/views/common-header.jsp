@@ -34,8 +34,8 @@
         <ul class="am-nav am-nav-pills am-topbar-nav">
             <li ${param.active_item=='home'?'class="am-active"':''}><a href="${ctx}/">首页</a></li>
             <li ${param.active_item=='alarm'?'class="am-active"':''}><a href="${ctx}/alarm/list.html">警报</a></li>
-            <li ${param.active_item=='user'?'class="am-active"':''}><a href="${ctx}/user/list.html?offset=0&limit=20">用户</a></li>
-            <li ${param.active_item=='ftpuser'?'class="am-active"':''}><a href="${ctx}/ftp/list.html?offset=0&limit=20">FTP账号</a></li>
+            <li ${param.active_item=='user'?'class="am-active"':''}><a href="${ctx}/user/list.html">用户</a></li>
+            <li ${param.active_item=='ftpuser'?'class="am-active"':''}><a href="${ctx}/ftp/list.html">FTP账号</a></li>
             <%--<li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
                     下拉菜单 <span class="am-icon-caret-down"></span>

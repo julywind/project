@@ -84,27 +84,7 @@
             </c:otherwise>
             </c:choose>
 
-            <div class="am-panel-footer">
-                <c:set var="limit" value="${param.limit==null?25:param.limit}"/>
-                <c:set var="currentPage" value="${param.offset==null?1:(param.offset+limit-1)/limit}"/>
-                <c:set var="totalPage" value="${(result.totalCount+limit-1)/limit}"/>
-                <c:set var="prePage" value="${currentPage-1}"/>
-                <c:set var="nextPage" value="${currentPage+1}"/>
-                <ul class="am-pagination">
-                    <li ${prePage<1?"class='am-disabled'":""}>
-                        <a href="./list.html?limit=${limit}&offset=${(prePage-1)*limit}">&laquo; Prev</a></li>
-                    <%--<li class="am-disabled"><a href="#">&laquo;</a></li>--%>
-                    <%--<spring:message code="uri" />--%>
-                    <c:forEach var="item" varStatus="status" begin="1" end="${totalPage}">
-                        <li ${status.index==currentPage?'class="am-active"':''}>
-                            <a href="./list.html?limit=${limit}&offset=${(status.index-1)*limit}">${status.index}</a></li>
-                    </c:forEach>
-                    <%--<li><a href="#">&raquo;</a></li>--%>
-                    <li ${nextPage>totalPage?"class='am-disabled'":""}>
-                        <a href="./list.html?limit=${limit}&offset=${(nextPage-1)*limit}">Next &raquo;</a>
-                    </li>
-                </ul>
-            </div>
+            <jsp:include page="../pager-footer.jsp"/>
         </div>
     </div>
 </div>
