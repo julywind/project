@@ -64,4 +64,12 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.png</url-pattern>
     </servlet-mapping>
+
+    <!-- 自定义JSTL时间格式化 -->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/tags</taglib-uri>
+            <taglib-location>/WEB-INF/datetag.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

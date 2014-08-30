@@ -42,23 +42,49 @@
                 <h3 class="am-panel-title">FTP用户列表</h3>
             </div>
 
-            <ul class="am-list am-list-static">
-                <c:choose>
+            <c:choose>
                 <c:when test="${empty result.data}">
-                    <div class="am-panel-bd">
-                        无数据
-                    </div>
+                    <ul class="am-list am-list-static">
+                        <div class="am-panel-bd">
+                            无数据
+                        </div>
+                    </ul>
                 </c:when>
 
                 <c:otherwise>
-                    <c:forEach var="list" items="${result.data}" varStatus="status">
-                        <li >${status.count}|${list.userId}|${list.homedirectory}</li>
-                    </c:forEach>
+                    <table class="am-table am-table-bd am-table-bdrs am-table-striped am-table-hover">
+                        <thead align="center">
+                        <tr>
+                            <th>序号</th>
+                            <th>用户名</th>
+                            <th>个人目录</th>
+                            <th>状态</th>
+                            <th>写权限</th>
+                            <th>等待时间</th>
+                            <th>上传限制</th>
+                            <th>同时登陆限制</th>
+                            <th>单机登陆限制</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="list" items="${result.data}" varStatus="status">
+                            <tr>
+                                <td align="center">${status.count}</td>
+                                <td align="center">${list.userId}</td>
+                                <td>${list.homedirectory}</td>
+                                <td align="center">${list.enableflag?"启用":"停用"}</td>
+                                <td align="center">${list.writePermission?"有":"无"}</td>
+                                <td align="center">${list.idletime}秒</td>
+                                <td align="center">${list.uploadrate}kb/s</td>
+                                <td align="center">${list.maxloginnumber}</td>
+                                <td align="center">${list.maxloginperip}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </c:otherwise>
-                </c:choose>
-
-            </ul>
-            <div class="am-panel-footer">Footer写点儿啥呢...</div>
+            </c:choose>
+            <jsp:include page="../pager-footer.jsp"/>
         </div>
     </div>
 </div>

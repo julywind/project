@@ -14,7 +14,7 @@
 
 
     <listeners>
-        <nio-listener name="default" port="21">
+        <nio-listener name="default" port="2121">
             <ssl>
                 <keystore file="./res/ftpserver.jks" password="password" />
             </ssl>
