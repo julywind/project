@@ -72,6 +72,7 @@
                                 <td align="center">${list.userName}</td>
                                 <td align="center">${list.firstName}kb/s</td>
                                 <td align="center">${list.lastName}</td>
+                                <td align="center">${list.age}</td>
                                 <td align="center">${list.phoneNumber}</td>
                                 <td align="center">
                                     ${fn:substring(list.authority,0,1)=="1"?"有":"无"}
@@ -79,7 +80,7 @@
                                 <td align="center">
                                         ${fn:substring(list.authority,1,2)=="1"?"有":"无"}
                                 </td>
-                                <td align="center">${list.age}</td>
+
                             </tr>
                         </c:forEach>
                         </tbody>
