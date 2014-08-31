@@ -2,6 +2,7 @@ package com.special.ResideMenuDemo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -171,7 +172,12 @@ public class AlarmListFragment extends BaseFragment {
         mPullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getActivity(), "Clicked item!", Toast.LENGTH_LONG).show();
+                String addr = HttpUtil.finalUrl(getActivity(), "../" + mAdapter.getItem(i).getFileName());
+                Intent intent = new Intent();
+                intent.setData(Uri.parse(addr));
+                intent.setAction(Intent.ACTION_VIEW);
+                startActivity(intent); //启动浏览器
+                //Toast.makeText(getActivity(), "Clicked item!", Toast.LENGTH_LONG).show();
             }
         });
     }

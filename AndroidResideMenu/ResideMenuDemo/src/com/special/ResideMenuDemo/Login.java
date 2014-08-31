@@ -41,8 +41,6 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	public static final String PROCESS_OVER = "com.cfrt.patrol.processOver";
 	public static final String Default_Server = "http://123.57.8.66/";
 	private PackageInfo info = null;
-	private Boolean useStaticVerify = false;
-
 	private static Login mContext = null;
 
 	private Timer timer;
@@ -77,8 +75,6 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		mUser = (EditText) findViewById(R.id.login_user_edit);
 		mPassword = (EditText) findViewById(R.id.login_passwd_edit);
 		rmWord = (CheckBox) findViewById(R.id.remremberPswd);
-        mUser.setText("houmingtao");
-        mPassword.setText("111111");
 		// mWebView = (WebView) findViewById(R.id.login_webview);
 		// setServerInfo(null);
 
