@@ -1,5 +1,6 @@
 package com.special.ResideMenuDemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,9 @@ import com.special.ResideMenuDemo.base.BaseFragment;
 import com.special.ResideMenuDemo.lib.PullToRefreshBase;
 import com.special.ResideMenuDemo.net.HttpStatusException;
 import com.special.ResideMenuDemo.net.HttpUtil;
+import com.special.ResideMenuDemo.po.Alarm;
+import com.special.ResideMenuDemo.util.DateUtil;
+import com.special.ResideMenuDemo.util.JSONUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -19,6 +23,8 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: special
@@ -74,7 +80,7 @@ public class AlarmListFragment extends BaseFragment {
                 try {
                     String response = HttpUtil.submitPost(getActivity(), url1, new HashMap<String, String>()).toString();
                     System.out.println("response:"+response);
-                    onResult(response, PullToRefreshBase.MODE_PULL_DOWN_TO_REFRESH);
+                    onResult(response, PullToRefreshBase.MODE_PULL_UP_TO_REFRESH);
                 } catch (HttpStatusException e) {
                     sendMessage(e.getMessage() + " status:" + e.getStatus());
                 } catch (IOException e) {
@@ -117,13 +123,13 @@ public class AlarmListFragment extends BaseFragment {
                             for (int idx = list.size() - 1; idx >= 0; idx--) {
                                 JSONObject temp = list.getJSONObject(idx);
                                 //data.addFirst(temp);
-                                calendarList.add(temp.toString());
+                                calendarList.addFirst((Alarm)JSONUtil.toBean(temp,Alarm.class));
                             }
                         } else {
                             for (int idx = 0; idx < list.size(); idx++) {
                                 JSONObject temp = list.getJSONObject(idx);
                                 //data.add(temp);
-                                calendarList.add(temp.toString());
+                                calendarList.add((Alarm)JSONUtil.toBean(temp,Alarm.class));
                             }
                         }
                     }
@@ -147,11 +153,19 @@ public class AlarmListFragment extends BaseFragment {
 
         listViewRemoveHandler.sendEmptyMessage(-1);
     }
-    ArrayAdapter<String> mAdapter = null;
+    AlarmListAdapter mAdapter = null;
     private void initView(){
-        mAdapter=new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
+        /*SimpleAdapter mSimpleAdapter = new SimpleAdapter(this,listItem,//需要绑定的数据
+                R.layout.item,//每一行的布局//动态数组中的数据源的键对应到定义布局的View中new String[] {"ItemImage"
+                ,"ItemTitle", "ItemText"},
+    newint[] {R.id.ItemImage,R.id.ItemTitle,R.id.ItemText}
+    );*/
+
+
+
+        mAdapter=new AlarmListAdapter(
+                getActivity().getApplicationContext(),
+                R.layout.alarm_list_item,
                 getCalendarData());
         mPullToRefreshListView.setAdapter(mAdapter);
         mPullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -162,8 +176,32 @@ public class AlarmListFragment extends BaseFragment {
         });
     }
 
-    ArrayList<String> calendarList = new ArrayList<String>();
-    private ArrayList<String> getCalendarData(){
+    LinkedList<Alarm> calendarList = new LinkedList<Alarm>();
+    private LinkedList<Alarm> getCalendarData(){
         return calendarList;
+    }
+
+    public class AlarmListAdapter extends ArrayAdapter<Alarm> {
+        private int resourceId;
+        public AlarmListAdapter(Context context, int textViewResourceId,List<Alarm> objects) {
+            super(context, textViewResourceId, objects);
+            this.resourceId = textViewResourceId;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            Alarm alarm = getItem(position);
+            LinearLayout alarmListItem = new LinearLayout(getContext());
+            String inflater = Context.LAYOUT_INFLATER_SERVICE;
+            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(inflater);
+            vi.inflate(resourceId, alarmListItem, true);
+            TextView camera = (TextView)alarmListItem.findViewById(R.id.camera);
+            TextView filePath = (TextView)alarmListItem.findViewById(R.id.file_path);
+            TextView genDate = (TextView)alarmListItem.findViewById(R.id.gen_date);
+            camera.setText(alarm.getUserName());
+            filePath.setText(alarm.getFileName());
+            genDate.setText(DateUtil.getLongToString(alarm.getGenDate()));
+            return alarmListItem;
+        }
     }
 }
