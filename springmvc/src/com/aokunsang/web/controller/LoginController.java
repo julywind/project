@@ -17,7 +17,6 @@ import com.aokunsang.po.User;
 import com.aokunsang.service.LoginService;
 import com.aokunsang.web.BaseController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 
@@ -92,9 +91,9 @@ public class LoginController extends BaseController{
 		}
 		if(!loginService.duplicateUser(user)){
 			loginService.addUser(user);
-            return new ModelAndView(new RedirectView("/user/list",true), "result", new JsonResultBean(true,"操作成功"));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"操作成功","user/list"));
 		}
-        return new ModelAndView(new RedirectView("/user/register",true), "result", new JsonResultBean(false,"用户名已存在"));
+        return new ModelAndView("JumpUrl", "result", new JsonResultBean(false,"用户名已存在","user/register"));
 	}
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_MANAGE}, resultType= ResultTypeEnum.page)
@@ -149,11 +148,11 @@ public class LoginController extends BaseController{
 
         if(TextUtil.isEmpty(newPassword) || TextUtil.isEmpty(rePassword) || !newPassword.equals(rePassword))
         {
-            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "两次密码输入不相同"));
+            return new ModelAndView("JumpUrl"/*new RedirectView("/user/home",true)*/, "result", new JsonResultBean(false, "两次密码输入不相同","user/home"));
         }
         User old_user = loginService.getUser(user.getUserName(), user.getPassWord());
         if (old_user == null) {
-            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "原密码不正确"));
+            return new ModelAndView("JumpUrl"/*new RedirectView("/user/home",true)*/, "result", new JsonResultBean(false, "原密码不正确","user/home"));
         } else {
             old_user.setPassWord(newPassword);
             int result=loginService.updatePasswd(old_user);
@@ -161,7 +160,7 @@ public class LoginController extends BaseController{
                 return logout(session);/*new ModelAndView("user/update_passwd", "result", new JsonResultBean(true, "操作成功"));*/
             else
             {
-                return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false, "修改失败"));
+                return new ModelAndView("JumpUrl"/*new RedirectView("/user/home",true)*/, "result", new JsonResultBean(false, "修改失败","user/home"));
             }
         }
     }
