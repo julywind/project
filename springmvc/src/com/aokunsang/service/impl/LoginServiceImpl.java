@@ -3,6 +3,7 @@
  */
 package com.aokunsang.service.impl;
 
+import com.aokunsang.util.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ public class LoginServiceImpl implements LoginService {
     static String updatePasswd = "update user set passWord=md5(?) where id=?";
 	@Override
 	public User getUser(String userName, String password) {
+        if(TextUtil.isEmpty(userName) || TextUtil.isEmpty(password))
+        {
+            return null;
+        }
 		User user = baseDao.getObject(getUser, User.class, new Object[]{userName,password});
 		return user;
 	}

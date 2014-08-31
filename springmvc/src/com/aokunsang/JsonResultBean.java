@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class JsonResultBean implements Serializable {
     private boolean result;
     private int totalCount;
+    private String redirectUrl;
     private Object data;
     /**
      * 返回结果
@@ -18,6 +19,18 @@ public class JsonResultBean implements Serializable {
     {
         this.setResult(result);
         this.setData(data);
+    }
+
+    /**
+     * 返回结果
+     * @param result 操作是否成功
+     * @param data  返回的数据
+     */
+    public JsonResultBean(boolean result, Object data,String redirectUrl)
+    {
+        this.setResult(result);
+        this.setData(data);
+        this.setRedirectUrl(redirectUrl);
     }
 
     /**
@@ -55,5 +68,13 @@ public class JsonResultBean implements Serializable {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

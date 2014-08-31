@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <title>Landing Page | Amaze UI Example</title>
+    <title>工地管理系统</title>
 
     <style>
         .head-fixed {

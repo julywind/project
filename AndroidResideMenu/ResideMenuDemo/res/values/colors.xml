@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <color name="window_bg">#ffeef1f3</color>
+    <color name="background">#0093d4</color>
+    <color name="background2">#0093c4</color>
+    <color name="qqblue">#ff54acea</color>
+    <color name="transparent">#00000000</color>
+     <color name="pull_text_color">#868686</color>
+</resources>

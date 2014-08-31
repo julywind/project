@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import javax.xml.soap.Text;
 
 /**
  * 登陆方法
@@ -41,7 +40,7 @@ public class LoginController extends BaseController{
 	public ModelAndView login(HttpSession session){
         if(getLoginUser(session)!=null)
         {
-            return new ModelAndView(new RedirectView("/user/home",true),"result", getLoginUser(session));
+            return new ModelAndView("JumpUrl","result", new JsonResultBean(true,getLoginUser(session),"/user/home"));
         }
 		return new ModelAndView("login", "result", new JsonResultBean(false,"请输入userName和passWord登录"));
 	}
@@ -55,14 +54,16 @@ public class LoginController extends BaseController{
 	public ModelAndView logon(HttpSession session,String userName,String passWord){
         if(getLoginUser(session)!=null)
         {
-            return new ModelAndView(new RedirectView("/user/home",true));
+            //return new ModelAndView(new RedirectView("/user/home",true),"result", new JsonResultBean(true,"登录成功"));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"登录成功","/user/home"));
         }
 
 		User user = loginService.getUser(userName, passWord);
 		if(user!=null){
             user.setPassWord("");
             session.setAttribute(LOGIN_FLAG,user);
-            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"登录成功"));
+            //return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"登录成功"));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"登录成功","/user/home"));
 		}else{
             return new ModelAndView("login", "result", new JsonResultBean(false,"用户名或者密码错误"));
 		}
@@ -75,9 +76,11 @@ public class LoginController extends BaseController{
             user.setAuthority("100000");
         }
         if(!loginService.duplicateUser(user)){
-            return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"可以使用"));
+            //return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"可以使用"));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"可以使用","/user/home"));
         }
-        return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false,"<font color='red'>已存在</font>"));
+        //return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(false,"<font color='red'>已存在</font>"));
+        return new ModelAndView("JumpUrl", "result", new JsonResultBean(false,"<font color='red'>已存在</font>","/user/home"));
     }
 
 
@@ -112,7 +115,8 @@ public class LoginController extends BaseController{
     @RequestMapping(value="/user/logout")
     public ModelAndView logout(HttpSession session){
         session.removeAttribute(LOGIN_FLAG);
-        return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"操作成功"));
+        //return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"操作成功"));
+        return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"操作成功","/user/home"));
     }
 
     @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL}, resultType= ResultTypeEnum.page)

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">市政通</string>
+	<string name="welcome">欢迎使用菏泽市政通</string>
+
+	<string name="urgent_contact_setting">紧急联系人设置</string>
+	<string name="urgent_msg_setting">短信内容设置</string>
+
+	<!-- Contact List Activity Name -->
+	<string name="contact_list_caption">紧急联系人</string>
+	<string name="content_list_caption">短信内容编辑</string>
+
+	<string name="contact_name">姓名</string>
+	<string name="contact_number">号码</string>
+	<string name="contact_name_empty">姓名为空</string>
+	<string name="contact_number_empty">空号码</string>
+
+	<string name="type_to_compose_text_enter_to_send">输入信息内容</string>
+	<string name="add_contact">添加联系人</string>
+	<string name="save_success">保存成功!</string>
+	<string name="save_failed">保存失败!</string>
+	<string name="delete_success">删除成功!</string>
+
+	<string name="description_minus_button">删除</string>
+	<string name="description_plus_button">添加</string>
+	<string name="remove">移除</string>
+	<string name="save">保存</string>
+	<string name="send">发送</string>
+	<string name="cancel">取消</string>
+	<string name="add">添加</string>
+	<string name="edit">编辑号码</string>
+	<string name="from_contact">从联系人添加</string>
+
+	<string name="view_contact">编辑联系人</string>
+	<string name="contact_num">号码:</string>
+	<string name="alert_dialog_ok">确定</string>
+	<string name="alert_dialog_cancel">取消</string>
+	<string name="alert_dialog_yes">确定</string>
+	<string name="alert_dialog_no">取消</string>
+	<string name="alert_dialog_up_to_five">紧急联系人最大数目为5!</string>
+	<string name="alert_dialog_delete_query">确定要删除此条目吗?</string>
+
+	<string name="notify_display_getting_gps_info">正在获取GPS信息.</string>
+	<string name="notify_display_get_gps_success">获取GPS信息成功!</string>
+	<string name="notify_display_get_gps_fail">获取GPS信息失败!</string>
+	<string name="notify_display_regetting_gps_info">正在重新获取GPS信息!</string>
+	<string name="notify_display_sending_msg_with_gps">已获取GPS信息，正在发送信息.</string>
+	<string name="notify_display_sending_msg_without_gps">未获取GPS信息，正在发送信息.</string>
+	<string name="notify_display_sending_msg_success">发送信息成功.</string>
+	<string name="notify_display_sending_msg_fail">发送信息失败.</string>
+
+	<string name="gps_get_success_display">  ##%1$s##%2$s##%3$s##%4$s##%5$s##%6$s##\n</string>
+	<string name="gps_get_failed_display">failed information</string>
+	<string name="btn_start">开始巡查</string>
+	<string name="btn_stop">巡查结束</string>
+	<string name="empty">N/A</string>
+	<string name="longitude">经度：</string>
+	<string name="latitude">纬度：</string>
+	<string name="altitude">海拔：</string>
+	<string name="notify_open_network">请开启GPRS或WIFI网络连接</string>
+	<string name="lastUpdateTime">最后更新时间：</string>
+	
+	<string name="menuSetting">设置</string>
+	<string name="menuQuit">退出</string>
+	
+	<string name="copyright">版权所有: <b>菏泽市市政工程管理处</b></string>
+	<string name="techSupport">技术支持: <b>北京层峰瑞通科技有限公司</b></string>
+
+	<string name="checkUpdate">检查更新</string>
+	<string name="alreadyLatest">您已经是最新版本，谢谢使用!</string>
+	<string name="downloadTitle">软件版本更新</string>
+	<string name="download">下载</string>
+	<string name="later">以后再说</string>
+	<string name="ok">确定</string>
+	<string name="downloadTip">最新的软件版本是%1$s，您的版本已经过期，请下载更新~</string>
+	
+	<string name="alreadyStartedSending">已经开始巡查</string>
+	<string name="alreadyStopedSending">已经停止巡查</string>
+	
+	<string name="loginTip">使用手机号或者用户名登录</string>
+	<string name="rememberPassword">记住密码</string>
+	<string name="forgetPassword">忘记密码？</string>
+	
+	<string name="usernameHint">请输入用户名</string>
+	<string name="passwordHint">请输入密码</string>
+	<string name="login">登录</string>
+	<string name="back">返回</string>
+	<string name="quit">退出</string>
+	<string name="loginError">登陆错误</string>
+	<string name="loginErrorMsg">用户名或者密码不能为空，\n请输入后再登录！</string>
+	<string name="loginFail">登陆失败</string>
+	<string name="loginFailMsg">用户名或者密码不正确，\n请检查后重新输入！</string>
+	<string name="networkError">网络设置提示</string>
+	<string name="networkErrorMsg">网络连接不可用,是否进行设置？</string>
+	<string name="noPermission">您尚未开通登陆权限，请联系管理员。</string>
+	<string name="sign">签到</string>
+	<string name="submit">提交</string>
+	<string name="search">搜索</string>
+	<string name="confirm">确认</string>
+	<string name="patrolStarted">巡查开始</string>
+	<string name="patrolEnded">巡查 结束</string>
+	<string name="signConfirmTip">确认在当前位置签到？</string>
+	<string name="resignConfirmTip">今天已经签到过，再次签到会覆盖上次签到信息，确认重新签到么？</string>
+	<string name="yes">是</string>
+	<string name="no">否</string>
+	<string name="history">历史记录</string>
+	<string name="locating">正在确定您的位置...</string>
+	<string name="empty_location">尚未获取到位置信息</string>
+	<string name="sign_info">签到信息</string>
+	
+	<string name="pop_person_info"><b><font color="blue">巡查员信息</font></b><p/>姓名：<b>%1$s</b>
+       	<p/>所属区所：<b>%2$s</b>
+       	<p/>联系电话：<b><a href="tel:%3$s">%3$s</a></b>
+       	<p/>最后更新时间：<b>%4$s</b>
+    </string>
+    <string name="str_filter">
+        &amp;FILTER=
+        <Filter>
+        	<PropertyIsGreaterThan><PropertyName>reg_time</PropertyName><Literal>%s</Literal></PropertyIsGreaterThan>
+        </Filter>
+    </string>
+    <string name="str_show_person">显示人员</string>
+    <string name="str_hide_person">隐藏人员</string>
+    <string name="str_show_person_online">仅在线</string>
+    <string name="str_show_person_all">全部</string>
+    
+    <string name="str_show_float">控制面板</string>
+    <string name="str_close">关闭</string>
+    
+    <string name="patrol">巡查</string>
+    <string name="new_issue">新事件</string>
+    <string name="reported">已上报</string>
+    <string name="confirm_quit">确认要注销么？</string>
+    <string name="contact">联系人</string>
+    <string name="chat">会话</string>
+    <string name="newItem">新建</string>
+    <string name="confirmIssueLoc">确认事件位置？</string>
+    <string name="layers">图层</string>
+    <string name="near">周边</string>
+    <string name="map">地图</string>
+    
+    <string name="last_update_time"><font size="12">\n上次更新:%1$s</font></string>
+    <string name="ask_to_stop_patrol">您还在巡查中，现在要停止么？</string>
+    <string name="exit_tip_end_patrol">退出后,你将收不到新的消息。\n进行中的巡查也将终止。确定要退出？</string>
+    <string name="exit_tip">退出后，你将收不到新的消息。确定要退出？</string>
+    <string name="issue_report">事件上报</string>
+    <string name="issue_list">事件列表</string>
+    <string name="issue_location">事件位置</string>
+    <string name="clear">清空</string>
+    <string name="confirm_clear_history">确认清空历史记录?</string>
+    
+    <string name="close_chat_room">关闭会话</string>
+    <string name="press_to_record">按住开始录音</string>
+
+    <string name="soundRemind">声音提醒</string>
+    <string name="vibratorRemind">震动提醒</string>
+    
+    <string name="layer_person">巡查人员</string>
+    <string name="layer_bridge">桥梁</string>
+    <string name="layer_shuichi">水尺</string>
+    <string name="layer_jishui">易积水点位</string>
+    <string name="layer_road">道路</string>
+    <string name="layer_camera">摄像头</string>
+    <string name="layer_car">巡查车</string>
+    <string name="layer_pump">泵站</string>
+    <string name="layer_cangku">仓库</string>
+    <string name="task">我的任务</string>
+    <string name="task_now">当前</string>
+    <string name="task_history">历史</string>
+</resources>

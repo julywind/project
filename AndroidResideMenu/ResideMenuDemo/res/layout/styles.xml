@@ -1,10 +1,34 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="fragment_text">
-        <item name="android:textColor">#ffacacac</item>
-        <item name="android:textSize">25sp</item>
-    </style>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="android:Theme.Light" /> 
     
+    <style name="chat_text_date_style">
+	    <item name="android:padding">2dp</item>    
+		<item name="android:textColor">#ffffff</item>   
+		<item name="android:textSize">12sp</item>      
+		<item name="android:background">#bfbfbf</item> 
+	</style>
+  
+	     
+	<style name="chat_content_date_style">
+	    <item name="android:minHeight">50dp</item>
+	    <item name="android:gravity">left|center</item>    
+		<item name="android:textColor">#000000</item>   
+		<item name="android:textSize">15sp</item>      
+		<item name="android:lineSpacingExtra">2dp</item>   
+		<item name="android:clickable">true</item>   
+		<item name="android:focusable">true</item>   
+		<item name="android:background">#bfbfbf</item> 
+	</style>	 
+	
+	<style name="chat_text_name_style">  
+		<item name="android:textColor">#818181</item>   
+		<item name="android:textSize">15sp</item>      
+		<item name="android:gravity">center</item> 
+	</style>
+    
+	<!-- ####################以上内容全部来自搬运 ############################################ -->
+	
     <style name="AnimFade" parent="@android:style/Animation.Activity">  
     	<item name="android:activityOpenEnterAnimation">@anim/fade_in</item>  
     	<item name="android:activityOpenExitAnimation">@anim/hold</item>        
@@ -57,6 +81,25 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
     
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog" >
+        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->         
+     </style>
+     
+     <style name="MyDialogStyleTop" parent="android:Theme.NoTitleBar" >
+        <item name="android:windowAnimationStyle">@style/AnimTop2</item>
+        <item name="android:windowIsFloating">false</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->        
+     </style>
+     
     <style name="HeadScale" parent="android:Theme.Dialog" >
         <item name="android:windowAnimationStyle">@style/AnimHead</item>
         <item name="android:windowFrame">@null</item><!--边框-->
@@ -66,12 +109,9 @@
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
      </style>
-
-    <style name="guideDialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowNoTitle">true</item>
-    </style>
+     
+    <style name="MyProgressBar" parent="android:Widget.ProgressBar">         
+        <item name="android:indeterminateDrawable">@drawable/loading</item>     
+	</style>
+	
 </resources>

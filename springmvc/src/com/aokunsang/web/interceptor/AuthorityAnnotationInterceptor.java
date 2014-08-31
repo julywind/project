@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,23 +17,39 @@ import com.aokunsang.authority.AuthorityHelper;
 import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.po.User;
+import com.aokunsang.service.LoginService;
 import com.aokunsang.util.ResultTypeEnum;
 import com.aokunsang.web.controller.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private LoginService loginService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.debug("");
+        logger.debug("uri:", request.getRequestURI());
         HandlerMethod handler2=(HandlerMethod) handler;
         FireAuthority fireAuthority = handler2.getMethodAnnotation(FireAuthority.class);
 
+        logger.debug(getClass().getSimpleName(),"HeaderInfo:  start");
+        Enumeration df = request.getHeaderNames();
+        String headerinfo = "";
+        while(df.hasMoreElements())
+        {
+            String test = (String)df.nextElement();
+            logger.debug(getClass().getSimpleName(),"HeaderInfo:   <"+test+">"+request.getHeader(test));
+            headerinfo+="HeaderInfo:   <"+test+">"+request.getHeader(test)+"\n";
+
+        }
+        System.out.println(headerinfo);
+        logger.debug(getClass().getSimpleName(),"HeaderInfo:  end");
         if(null == fireAuthority){
             //没有声明权限,放行
             return true;
@@ -43,6 +60,15 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         HttpSession session = request.getSession();
         User manager = (User)session.getAttribute(LoginController.LOGIN_FLAG);
         boolean aflag = false;
+
+        if(manager==null) {
+            String userName = request.getParameter("userName");
+            String passWord = request.getParameter("passWord");
+            manager = loginService.getUser(userName, passWord);
+            if(manager!=null) {
+                session.setAttribute(LoginController.LOGIN_FLAG,manager);
+            }
+        }
 
         if(manager!=null)
         {
@@ -55,7 +81,6 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         }
 
         if(false == aflag){
-
             if (fireAuthority.resultType() == ResultTypeEnum.page) {
                 //传统的登录页面
                 StringBuilder sb = new StringBuilder();
@@ -97,5 +122,12 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
     }
 
 
+    public LoginService getLoginService() {
+        return loginService;
+    }
+
+    public void setLoginService(LoginService loginService) {
+        this.loginService = loginService;
+    }
 }
 

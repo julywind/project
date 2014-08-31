@@ -5,11 +5,47 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="8"
               android:targetSdkVersion="17"/>
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <application
+            android:name="com.special.ResideMenuDemo.PatrolApp"
+            android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+
         <activity android:name=".MenuActivity"
                   android:theme="@android:style/Theme.Light.NoTitleBar"
                   android:label="@string/app_name">
+
+        </activity>
+
+        <activity
+                android:name="com.special.ResideMenuDemo.common.PictureShower"
+                android:configChanges="orientation|keyboardHidden"
+                android:theme="@style/HeadScale" />
+        <activity
+                android:name="com.special.ResideMenuDemo.LoadingActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:theme="@style/MyDialogStyle" >
             <intent-filter>
+                <action android:name="com.cfrt.hzsz.heart.heartBeat" />
+                <action android:name="com.cfrt.hzsz.patrol.loginSuccess" />
+                <action android:name="com.cfrt.hzsz.patrol.loginFialed" />
+                <action android:name="com.cfrt.hzsz.patrol.processOver" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name="com.special.ResideMenuDemo.LoadingActivity2"
+                android:configChanges="orientation|keyboardHidden"
+                android:theme="@style/MyDialogStyle" >
+            <intent-filter>
+                <action android:name="com.cfrt.hzsz.patrol.processOver" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".Login"
+                android:configChanges="orientation|keyboardHidden"
+                android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="com.cfrt.hzsz.heart.heartBeat" />
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
