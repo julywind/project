@@ -107,7 +107,7 @@
             </p>
 
             <p>
-                <a href="#" class="am-btn am-btn-sm get-btn">下载Android移动终端√</a>
+                <a href="/downloads/android_v0.5.apk" class="am-btn am-btn-sm get-btn">下载Android移动终端√</a>
             </p>
         </div>
     </div>

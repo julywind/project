@@ -42,14 +42,6 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
 
         logger.debug(getClass().getSimpleName(),"HeaderInfo:  start");
         Enumeration df = request.getHeaderNames();
-        String headerinfo = "";
-        while(df.hasMoreElements())
-        {
-            String test = (String)df.nextElement();
-            logger.debug(getClass().getSimpleName(),"HeaderInfo:   <"+test+">"+request.getHeader(test));
-            headerinfo+="HeaderInfo:   <"+test+">"+request.getHeader(test)+"\n";
-        }
-        System.out.println(headerinfo);
         logger.debug(getClass().getSimpleName(),"HeaderInfo:  end");
         if(null == fireAuthority){
             //没有声明权限,放行
@@ -148,11 +140,16 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         int len = spUrl.length;
         String endUrl = spUrl[len - 1];
 
-        if(matcher.find()) {
-            String[] spEndUrl = endUrl.split("\\?");
-            return spEndUrl[0].split("\\.")[1];
+        try {
+            if (matcher.find()) {
+                String[] spEndUrl = endUrl.split("\\?");
+                return spEndUrl[0].split("\\.")[1];
+            }
+            return endUrl.split("\\.")[1];
+        }catch(Exception e)
+        {
+            return  "html";
         }
-        return endUrl.split("\\.")[1];
     }
 }
 
