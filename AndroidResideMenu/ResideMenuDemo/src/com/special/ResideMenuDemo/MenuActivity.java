@@ -16,7 +16,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private MenuActivity mContext;
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
-    private ResideMenuItem itemCalendar;
+    private ResideMenuItem itemAlarmList;
     private ResideMenuItem itemSettings;
 
     /**
@@ -28,7 +28,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.main);
         mContext = this;
         setUpMenu();
-        changeFragment(new HomeFragment());
+        changeFragment(new AlarmListFragment());
     }
 
     private void setUpMenu() {
@@ -42,19 +42,19 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.setScaleValue(0.6f);
 
         // create menu items;
-        itemHome     = new ResideMenuItem(this, R.drawable.icon_home,     "Home");
-        itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  "Profile");
-        itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, "Calendar");
-        itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, "Settings");
+        itemHome     = new ResideMenuItem(this, R.drawable.icon_home,     "首页");
+        itemProfile  = new ResideMenuItem(this, R.drawable.icon_profile,  "情景模式");
+        itemAlarmList = new ResideMenuItem(this, R.drawable.icon_calendar, "警报列表");
+        itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, "设置");
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
-        itemCalendar.setOnClickListener(this);
+        itemAlarmList.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
 
+        resideMenu.addMenuItem(itemAlarmList, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_RIGHT);
+        resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_RIGHT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_RIGHT);
 
         // You can disable a direction by setting ->
@@ -86,8 +86,8 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             changeFragment(new HomeFragment());
         }else if (view == itemProfile){
             changeFragment(new ProfileFragment());
-        }else if (view == itemCalendar){
-            changeFragment(new CalendarFragment());
+        }else if (view == itemAlarmList){
+            changeFragment(new AlarmListFragment());
         }else if (view == itemSettings){
             changeFragment(new SettingsFragment());
         }

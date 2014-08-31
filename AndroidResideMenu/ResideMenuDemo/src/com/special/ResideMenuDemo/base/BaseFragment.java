@@ -1,17 +1,13 @@
 package com.special.ResideMenuDemo.base;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import net.sf.json.JSONObject;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -20,12 +16,20 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
+import com.special.ResideMenuDemo.R;
+import net.sf.json.JSONObject;
 
-public class BaseActivity extends Activity {
+import java.io.File;
+import java.util.ArrayList;
+
+public class BaseFragment extends Fragment {
 	protected Context instance = null;
 	
 	public static JSONObject getCurrentUser(Context ctx)
@@ -40,15 +44,7 @@ public class BaseActivity extends Activity {
 		}
 		return obj;
 	}
-	public void setCurrentUser(JSONObject currentUser) {
-		if(currentUser==null)
-		{
-			setCurrentUserStr(null);
-		}else{
-			setCurrentUserStr(currentUser.toString());
-		}
-	}
-	
+
 	/*
      * 判断网络连接是否已开
      * 2012-08-20
@@ -63,47 +59,13 @@ public class BaseActivity extends Activity {
         }
         return bisConnFlag;
     }
-	public static Long isLoadingPerson(Context ctx)
-	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
-		Long obj=-1l;
-		try{
-			obj=sp.getLong("loadingPerson", -1l);
-		}catch(Exception e)
-		{
-			//e.printStackTrace();
-		}
-		return obj;
-	}
-	
-	public static void resetLoadingPerson(Context ctx)
-	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
-		Editor editor = sp.edit();
-		editor.remove("loadingPerson");
-		editor.commit();
-	}
 
-	private void setCurrentUserStr(String currentUser)
-	{
-		
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
-		Editor editor = sp.edit();
-		if(currentUser==null)
-		{
-			editor.remove("currentUser");
-		}else
-		{
-			editor.putString("currentUser", currentUser);
-		}
-		editor.commit();
-	}
-	//删除通知    
+	//删除通知
 	protected void clearNotification(){
         // 启动后删除之前我们定义的通知   
-        NotificationManager notificationManager = (NotificationManager) this 
-                .getSystemService(NOTIFICATION_SERVICE);   
-        notificationManager.cancel(10402);  
+        NotificationManager notificationManager = (NotificationManager) getActivity()
+                .getSystemService(Activity.NOTIFICATION_SERVICE);
+        notificationManager.cancel(100);
     }
     
 	protected Handler mHandler = new Handler() {
@@ -135,13 +97,29 @@ public class BaseActivity extends Activity {
 		return Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ "/cfrt/patrol" + path;
 	}
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        instance = inflater.getContext();
+        Intent intent = getActivity().getIntent();
+        if(intent.hasExtra("fromNotify")&&intent.getBooleanExtra("fromNotify",false))
+        {
+            clearNotification();
+        }
+        //PatrolApp.getInstance().addActivity(this);
+
+        /*if (!Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
+            //当前不可用
+            Toast.makeText(getActivity(), "系统检测到您尚未安装存储卡，部分功能可能无法正常运行，请尽快安装", Toast.LENGTH_LONG).show();
+        }*/
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    protected void onCreate() {
 		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		instance = this;
-		Intent intent = getIntent();
+		instance = getActivity();
+		Intent intent = getActivity().getIntent();
 		if(intent.hasExtra("fromNotify")&&intent.getBooleanExtra("fromNotify",false))
 		{
 			clearNotification();
@@ -152,7 +130,7 @@ public class BaseActivity extends Activity {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
 			//当前不可用
-			Toast.makeText(this, "系统检测到您尚未安装存储卡，部分功能可能无法正常运行，请尽快安装", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "系统检测到您尚未安装存储卡，部分功能可能无法正常运行，请尽快安装", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -209,7 +187,7 @@ public class BaseActivity extends Activity {
 	public Bitmap getThundbPic(String imageFilePath)
 	{
 		// 首先取得屏幕对象
-		Display display = this.getWindowManager().getDefaultDisplay();
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
 		// 获取屏幕的宽和高
 		int dw = display.getWidth();
 		int dh = display.getHeight();
@@ -222,7 +200,7 @@ public class BaseActivity extends Activity {
 	 * @return
 	 */
 	protected boolean isServiceRunning(String serviceName) {
-		ActivityManager myManager = (ActivityManager) getApplicationContext()
+		ActivityManager myManager = (ActivityManager) getActivity().getApplicationContext()
 				.getSystemService(Context.ACTIVITY_SERVICE);
 		ArrayList<RunningServiceInfo> runningService = (ArrayList<RunningServiceInfo>) myManager
 				.getRunningServices(100);
@@ -235,7 +213,22 @@ public class BaseActivity extends Activity {
 		return false;
 	}
 	
-	public void onClickBackBtn(View view) {
-		this.finish();
-	}
+    private Dialog waitingDialog;
+    //show waiting view
+    protected void showWaitingDialog(Context mContext){
+        final Dialog dialog = new Dialog(mContext, R.style.guideDialog);
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.loading, null);
+        waitingDialog = dialog;
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    protected void closeWaitingDialog(){
+        if(waitingDialog!=null&&waitingDialog.isShowing())
+        {
+            waitingDialog.dismiss();
+            waitingDialog = null;
+        }
+    }
 }

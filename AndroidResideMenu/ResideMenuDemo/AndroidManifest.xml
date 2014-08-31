@@ -26,10 +26,10 @@
                 android:configChanges="orientation|keyboardHidden"
                 android:theme="@style/MyDialogStyle" >
             <intent-filter>
-                <action android:name="com.cfrt.hzsz.heart.heartBeat" />
-                <action android:name="com.cfrt.hzsz.patrol.loginSuccess" />
-                <action android:name="com.cfrt.hzsz.patrol.loginFialed" />
-                <action android:name="com.cfrt.hzsz.patrol.processOver" />
+                <action android:name="com.special.ResideMenuDemo.heart.heartBeat" />
+                <action android:name="com.special.ResideMenuDemo.patrol.loginSuccess" />
+                <action android:name="com.special.ResideMenuDemo.patrol.loginFialed" />
+                <action android:name="com.special.ResideMenuDemo.patrol.processOver" />
             </intent-filter>
         </activity>
         <activity
@@ -37,7 +37,7 @@
                 android:configChanges="orientation|keyboardHidden"
                 android:theme="@style/MyDialogStyle" >
             <intent-filter>
-                <action android:name="com.cfrt.hzsz.patrol.processOver" />
+                <action android:name="com.special.ResideMenuDemo.patrol.processOver" />
             </intent-filter>
         </activity>
         <activity
@@ -45,7 +45,7 @@
                 android:configChanges="orientation|keyboardHidden"
                 android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
-                <action android:name="com.cfrt.hzsz.heart.heartBeat" />
+                <action android:name="com.special.ResideMenuDemo.heart.heartBeat" />
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>

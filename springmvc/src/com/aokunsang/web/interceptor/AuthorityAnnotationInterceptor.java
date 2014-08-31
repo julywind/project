@@ -9,6 +9,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -46,7 +48,6 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
             String test = (String)df.nextElement();
             logger.debug(getClass().getSimpleName(),"HeaderInfo:   <"+test+">"+request.getHeader(test));
             headerinfo+="HeaderInfo:   <"+test+">"+request.getHeader(test)+"\n";
-
         }
         System.out.println(headerinfo);
         logger.debug(getClass().getSimpleName(),"HeaderInfo:  end");
@@ -81,28 +82,34 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         }
 
         if(false == aflag){
-            if (fireAuthority.resultType() == ResultTypeEnum.page) {
+            String pathEnd = parseSuffix(request.getServletPath());
+            ResultTypeEnum returnType = ResultTypeEnum.page;
+            if(pathEnd.equalsIgnoreCase("json"))
+            {
+                returnType=ResultTypeEnum.json;
+            }
+            if (returnType == ResultTypeEnum.page) {
                 //传统的登录页面
                 StringBuilder sb = new StringBuilder();
                 sb.append(request.getContextPath());
                 if(manager!=null) {
-                    sb.append("/tip/noPermission.html?&msg=").append(URLEncoder.encode("No permission to access", "UTF-8"));
+                    sb.append("/tip/noPermission.html?msg=").append(URLEncoder.encode("No permission to access", "UTF-8"));
                 }else
                 {
                     sb.append("/user/login.html");
                 }
                 response.sendRedirect(sb.toString());
-            } else if (fireAuthority.resultType() == ResultTypeEnum.json) {
+            } else if (returnType == ResultTypeEnum.json) {
                 //ajax类型的登录提示
                 response.setCharacterEncoding("utf-8");
                 response.setContentType("text/html;charset=UTF-8");
                 OutputStream out = response.getOutputStream();
                 PrintWriter pw = new PrintWriter(new OutputStreamWriter(out,"utf-8"));
                 if(manager!=null) {
-                    pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"No permission to access"+"\"}");
+                    pw.println("{\"result\":false,\"code\":404,\"errorMessage\":\""+"No permission to access"+"\"}");
                 }else
                 {
-                    pw.println("{\"result\":false,\"code\":12,\"errorMessage\":\""+"You did't logged in system."+"\"}");
+                    pw.println("{\"result\":false,\"code\":301,\"errorMessage\":\""+"You did't logged in system."+"\"}");
                 }
 
                 pw.flush();
@@ -128,6 +135,24 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
 
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
+    }
+
+    final static Pattern pattern = Pattern.compile("\\S*[?]\\S*");
+    /**
+     * 获取链接的后缀名
+     * @return
+     */
+    private static String parseSuffix(String url) {
+        Matcher matcher = pattern.matcher(url);
+        String[] spUrl = url.toString().split("/");
+        int len = spUrl.length;
+        String endUrl = spUrl[len - 1];
+
+        if(matcher.find()) {
+            String[] spEndUrl = endUrl.split("\\?");
+            return spEndUrl[0].split("\\.")[1];
+        }
+        return endUrl.split("\\.")[1];
     }
 }
 

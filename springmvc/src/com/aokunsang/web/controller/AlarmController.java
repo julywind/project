@@ -30,8 +30,8 @@ public class AlarmController extends BaseController{
 
 	@Autowired
 	private AlarmService alarmService;
-
-	@RequestMapping(value="/alarm/list",method=RequestMethod.GET)
+    @FireAuthority(authorityTypes = {AuthorityType.USER_NORMAL})
+	@RequestMapping(value="/alarm/list")
 	public ModelAndView alarmList(Integer offset,Integer limit,String whereCondition){
         String sql = "select %s from alarm "+ (TextUtil.isEmpty(whereCondition)?"":(" where "+whereCondition));
         String sql2 = sql;

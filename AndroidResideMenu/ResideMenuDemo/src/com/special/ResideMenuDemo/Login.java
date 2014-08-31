@@ -78,7 +78,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		mPassword = (EditText) findViewById(R.id.login_passwd_edit);
 		rmWord = (CheckBox) findViewById(R.id.remremberPswd);
         mUser.setText("houmingtao");
-        mPassword.setText("h0umingta0!");
+        mPassword.setText("111111");
 		// mWebView = (WebView) findViewById(R.id.login_webview);
 		// setServerInfo(null);
 
@@ -277,10 +277,16 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		super.onStop();
 	}
 
-	@Override
+    @Override
+    public void onDetachedFromWindow() {
+        closeWaitingDialog();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
 	protected void onDestroy() {
 		stopLogin = true;
-
+        closeWaitingDialog();
 		if (ubreceiver != null)
 			unregisterReceiver(ubreceiver);
 		super.onDestroy();

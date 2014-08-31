@@ -9,16 +9,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.*;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import android.webkit.CookieSyncManager;
 import com.special.ResideMenuDemo.Login;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 
@@ -33,6 +30,9 @@ import android.webkit.CookieManager;
 
 public class HttpUtil {
     public static final String logTag = "HttpUtil";
+
+    public static final int ERROR_UNLOGIN=301;
+    public static final int ERROR_NO_PERMISSION=404;
 	public static PackageInfo readPackageInfo(Context ctx) {
 		PackageInfo info = null;
 		try {
@@ -112,10 +112,8 @@ public class HttpUtil {
 			responseMessage = new StringBuffer();
 			reqUrl = new URL(url);
 			connection = (HttpURLConnection) reqUrl.openConnection();
-
-			connection.setReadTimeout(3000);
-			connection.setConnectTimeout(3000);// jdk 1.5换成这个,连接超时
-			connection.setReadTimeout(3000);// jdk 1.5换成这个,读操作超时
+			connection.setConnectTimeout(10000);// jdk 1.5换成这个,连接超时
+			connection.setReadTimeout(10000);// jdk 1.5换成这个,读操作超时
 
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("cookie", cookieStr);
@@ -135,6 +133,19 @@ public class HttpUtil {
 			int charCount = -1;
 			in = connection.getInputStream();
 
+            Map<String,List<String>> df = connection.getHeaderFields();
+
+            String headerinfo = "";
+            for(String key : df.keySet())
+            {
+                headerinfo+="HeaderInfo:   <"+key+">"+df.get(key)+"\n";
+            }
+            System.out.println(headerinfo);
+            String string=connection.getHeaderField("Set-Cookie");
+            if(string!=null){
+                String JSESSIONID = (string.substring(0,string.indexOf(";")));
+                setCookieStr(ctx,JSESSIONID);
+            }
 			br = new BufferedReader(new InputStreamReader(in, "utf-8"));
 			while ((charCount = br.read()) != -1) {
 				responseMessage.append((char) charCount);
@@ -187,9 +198,8 @@ public class HttpUtil {
 			reqUrl = new URL(url);
 			connection = (HttpURLConnection) reqUrl.openConnection();
 
-			connection.setReadTimeout(3000);
-			connection.setConnectTimeout(3000);// jdk 1.5换成这个,连接超时
-			connection.setReadTimeout(3000);// jdk 1.5换成这个,读操作超时
+			connection.setConnectTimeout(30000);// jdk 1.5换成这个,连接超时
+			connection.setReadTimeout(30000);// jdk 1.5换成这个,读操作超时
 
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("cookie", getCookieStr(ctx));
@@ -208,6 +218,20 @@ public class HttpUtil {
 
 			int charCount = -1;
 			in = connection.getInputStream();
+            Map<String,List<String>> df = connection.getHeaderFields();
+
+            String headerinfo = "";
+            for(String key : df.keySet())
+            {
+                headerinfo+="HeaderInfo:   <"+key+">"+df.get(key)+"\n";
+            }
+            System.out.println(headerinfo);
+
+            String string=connection.getHeaderField("Set-Cookie");
+            if(string!=null){
+                String JSESSIONID = (string.substring(0,string.indexOf(";")));
+                setCookieStr(ctx,JSESSIONID);
+            }
 
 			br = new BufferedReader(new InputStreamReader(in, "utf-8"));
 			while ((charCount = br.read()) != -1) {
@@ -221,7 +245,6 @@ public class HttpUtil {
 					reqOut.close();
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("paramContent=" + paramStr + "|err=" + e);
 			}
 		}
 		return responseMessage;
@@ -488,97 +511,5 @@ public class HttpUtil {
 			}
 		}
 		return file;
-	}
-
-	public static String HttpPostData(Context ctx, String url,
-			Map<String, String> params,String cookieStr) throws HttpStatusException,IOException
-    {
-        HttpClient client = new HttpClient();
-        PostMethod httppost = new PostMethod(finalUrl(ctx, url));
-        System.out.println(httppost.getURI());
-        // 添加http头信息
-        httppost.setRequestHeader("Content-Type",
-                "application/x-www-form-urlencoded;charset=utf-8");
-        httppost.setRequestHeader("Authorization", "your token"); // 认证token
-        httppost.setRequestHeader("User-Agent", " Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
-        httppost.setRequestHeader("cookie", cookieStr==null?getCookieStr(ctx):cookieStr);
-        httppost.setRequestHeader("Charset", "utf-8");
-        httppost.setRequestHeader("terminalType", "Android-szt "
-                + readPackageInfo(ctx).versionName);
-        // http post的json数据格式： {"name": "your name","parentId":
-        // "id_of_parent"}
-
-        String paramStr = "";
-        NameValuePair[] param = new NameValuePair[params.size()];
-        int idx = 0;
-        for (Map.Entry<String, String> entry : params.entrySet()) {// 构建表单字段内容
-            if (paramStr.length() > 0)
-                paramStr += "&";
-            paramStr += entry.getKey() + "="
-                    + URLEncoder.encode(entry.getValue());
-
-            param[idx++] = new NameValuePair(entry.getKey(),
-                    entry.getValue());
-        }
-
-        httppost.setRequestBody(paramStr);
-        httppost.releaseConnection();
-        client.executeMethod(httppost);
-
-        // String response = new
-        // String(method.getResponseBodyAsString().getBytes("ISO-8859-1"));
-        // 检验状态码，如果成功接收数据
-        int code = httppost.getStatusCode();
-        CookieSyncManager.createInstance(ctx);
-        CookieSyncManager.getInstance().startSync();
-        CookieManager cm = CookieManager.getInstance();
-
-        String cookie=null;
-        if(httppost.getResponseHeader("Set-Cookie")!=null)
-        {
-            cookie = httppost.getResponseHeader("Set-Cookie").getValue();
-            cookie = cookie.split(" ")[0];
-        }
-        if (code == 302) {
-            Log.i(logTag,"[302 header]:" + httppost.getResponseHeaders().toString());
-
-            Log.i(logTag,"HttpUtil.submitGet() responseCode:302 Location:"
-                            + httppost.getResponseHeader("Location"));
-
-            String urlstr = httppost.getResponseHeader("Location").getValue();
-
-            if (cookie != null) {
-                System.out.println("Set-Cookie:" + cookie);
-                cm.setCookie(urlstr, cookie);
-            } else {
-                cookie = cm.getCookie(urlstr);
-            }
-            CookieSyncManager.getInstance().sync();
-            CookieSyncManager.getInstance().stopSync();
-            httppost.releaseConnection();
-            return HttpPostData(ctx,urlstr, params,cookie);
-        } else if (code == 200) {
-            if(cookie!=null) {
-                Log.i(logTag,"Set-Cookie[hmt]:" + cookie);
-                setCookieStr(ctx, cookie);
-            }
-            String response = httppost.getResponseBodyAsString();
-            // String rev = EntityUtils.toString(response.getEntity());//
-            // 返回json格式：
-            // {"id":
-            // "27JpL~j4vsL0LX00E00005","version":
-            // "abc"}
-            /*
-             * Object obj = JSONObject.fromObject(response); String id =
-             * obj.getString("id"); String version =
-             * obj.getString("version");
-             */
-            Log.i(logTag,"============Contents of get request===============");
-            Log.i(logTag,response);
-            Log.i(logTag,"============Contents of get request ends===============");
-            return response;
-        }else{
-            throw new HttpStatusException(code,"服务器状态异常");
-        }
 	}
 }
