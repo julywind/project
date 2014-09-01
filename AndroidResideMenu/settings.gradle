@@ -1,4 +1,4 @@
-include ':ResideMenu', ':ResideMenuDemo'
+include ':ResideMenu', 'BuidingSite'
 
 //override your build tools version in gradle.properties
 
