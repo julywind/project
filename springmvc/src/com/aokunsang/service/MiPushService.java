@@ -14,4 +14,5 @@ import java.util.List;
  */
 public interface MiPushService {
     public Message buildMessage() throws Exception;
+    public void sendMessageToAliases() throws Exception;
 }

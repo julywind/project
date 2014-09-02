@@ -4,10 +4,7 @@
 package com.aokunsang.service.impl;
 
 import com.aokunsang.dao.BaseDao;
-import com.aokunsang.po.User;
-import com.aokunsang.service.LoginService;
 import com.aokunsang.service.MiPushService;
-import com.aokunsang.util.TextUtil;
 import com.xiaomi.xmpush.server.Constants;
 import com.xiaomi.xmpush.server.Message;
 import com.xiaomi.xmpush.server.Sender;
@@ -33,7 +30,6 @@ public class MiPushServiceImpl implements MiPushService {
     public MiPushServiceImpl()
     {
         super();
-        Constants.useOfficial();
     }
 
     @Override
@@ -45,7 +41,7 @@ public class MiPushServiceImpl implements MiPushService {
                 .title(title)
                 .description(description).payload(messagePayload)
                 .restrictedPackageName(PACKAGE_NAME)
-                .passThrough(1)  //消息使用透传方式
+                .passThrough(0)  //消息使用通知栏提示
                 .notifyType(1)     // 使用默认提示音提示
                 .build();
         return message;
@@ -115,20 +111,21 @@ public class MiPushServiceImpl implements MiPushService {
         sender.sendToAlias(message, alias, 0); //根据alias，发送消息到指定设备上，不重试。
     }
 
-    private void sendMessageToAliases() throws Exception {
+    @Override
+    public void sendMessageToAliases() throws Exception {
         Constants.useOfficial();
         Sender sender = new Sender(APP_SECRET_KEY);
-        String messagePayload = "This is a message";
-        String title = "notification title";
-        String description = "notification description";
+        String messagePayload = "这是一个新消息";
+        String title = "新消息标题";
+        String description = "有新消息上传了";
         List<String> aliasList = new ArrayList<String>();
-        aliasList.add("testAlias1");  //alias非空白，不能包含逗号，长度小于128。
-        aliasList.add("testAlias2");  //alias非空白，不能包含逗号，长度小于128。
-        aliasList.add("testAlias3");  //alias非空白，不能包含逗号，长度小于128。
+        aliasList.add("18612082092");  //alias非空白，不能包含逗号，长度小于128。
+        aliasList.add("13701329128");  //alias非空白，不能包含逗号，长度小于128。
         Message message = new Message.Builder()
                 .title(title)
                 .description(description).payload(messagePayload)
                 .restrictedPackageName(PACKAGE_NAME)
+                .passThrough(0)  //消息使用通知栏提示
                 .notifyType(1)     // 使用默认提示音提示
                 .build();
         sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。

@@ -78,7 +78,7 @@ public class AlarmListFragment extends BaseFragment {
                 // TODO Auto-generated method stub
                 String url1 = "/alarm/list.json";
                 try {
-                    String response = HttpUtil.submitPost(getActivity(), url1, new HashMap<String, String>()).toString();
+                    String response = HttpUtil.submitPost(instance, url1, new HashMap<String, String>()).toString();
                     System.out.println("response:"+response);
                     onResult(response, PullToRefreshBase.MODE_PULL_UP_TO_REFRESH);
                 } catch (HttpStatusException e) {

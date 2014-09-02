@@ -2,6 +2,7 @@ package com.aokunsang.service.impl;
 
 import com.aokunsang.po.Alarm;
 import com.aokunsang.service.AlarmService;
+import com.aokunsang.service.MiPushService;
 import org.apache.ftpserver.ftplet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,6 +13,9 @@ public class FtpService extends DefaultFtplet {
 
     @Autowired
     private AlarmService alarmService;
+
+    @Autowired
+    private MiPushService miPushService;
 
     @Override
     public FtpletResult onUploadEnd(FtpSession session, FtpRequest request)
@@ -30,6 +34,11 @@ public class FtpService extends DefaultFtplet {
             alarm.setFileName(fileName);
             alarm.setGenDate(System.currentTimeMillis());
             alarmService.addAlarm(alarm);
+            try {
+                miPushService.sendMessageToAliases();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return super.onUploadEnd(session, request);
     }
