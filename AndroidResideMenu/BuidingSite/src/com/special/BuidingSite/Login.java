@@ -1,5 +1,6 @@
 package com.special.BuidingSite;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
@@ -8,7 +9,8 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.*;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +22,13 @@ import com.special.BuidingSite.base.BaseActivity;
 import com.special.BuidingSite.common.BroadCastAction;
 import com.special.BuidingSite.net.HttpStatusException;
 import com.special.BuidingSite.net.HttpUtil;
+import com.xiaomi.mipush.sdk.MiPushClient;
 import net.sf.json.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
@@ -68,6 +72,8 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_wx);
+        MiPushClient.unregisterPush(this);
+
 		mContext = this;
 		mUser = (EditText) findViewById(R.id.login_user_edit);
 		mPassword = (EditText) findViewById(R.id.login_passwd_edit);
@@ -100,7 +106,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	private HeartBroadcastReceiver ubreceiver = null;
 
 	private void LoadUserInfo() {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		if (sp.getBoolean("isSaved", false)) {
 			String username = sp.getString("name", "");
 			String userpassword = sp.getString("password", "");
@@ -114,12 +120,12 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	}
 
 	public String getServerAddr() {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		return sp.getString("serverAddr", Default_Server);
 	}
 
 	private void setServerInfo(String addr, Boolean sound, Boolean vibrate) {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 		editor.putString("serverAddr", addr);
 		editor.putBoolean("viberate", vibrate);
@@ -129,13 +135,13 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	}
 
 	private Boolean getSoundable() {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Boolean viberate = sp.getBoolean("sound", true);
 		return viberate;
 	}
 
 	private Boolean getViberatenable() {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Boolean viberate = sp.getBoolean("viberate", true);
 		return viberate;
 	}
@@ -149,7 +155,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	}
 
 	private void setCurrentUserStr(String currentUser) {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 		if (currentUser == null) {
 			editor.remove("currentUser");
@@ -161,14 +167,14 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 
 	private void setCookieStr(String cookieStr) {
 		Log.i(this.getClass().getSimpleName(),"Login.setCookieStr()  cookieStr=" + cookieStr);
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 		editor.putString("cookieStr", cookieStr);
 		editor.commit();
 	}
 
 	private void SaveUserInfo() {
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 
         editor.putString("store_name", mUser.getText().toString());
@@ -207,12 +213,22 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
         params.put("passWord",mPassword.getText().toString());
         boolean succees = false;
         try {
-            final String response = HttpUtil.submitPost(this,HttpUtil.finalUrl(this, loginUrl),params).toString();
+            final String response = HttpUtil.submitPost(this,loginUrl,params).toString();
             JSONObject resultObj = JSONObject.fromObject(response);
-            sendMessage(resultObj.getString("data"));
+            JSONObject data = resultObj.getJSONObject("data");
+            sendMessage(data.getString("msg"));
             if(resultObj.getBoolean("result"))
             {
                 succees = true;
+                setCurrentUser(data.getJSONObject("user"));
+                if (shouldInit()) {
+                    if(!TextUtils.isEmpty(data.getJSONObject("user").getString("phoneNumber"))) {
+                        MiPushClient.registerPush(this, PhoneApp.APP_ID, PhoneApp.APP_KEY);
+                    }else
+                    {
+                        sendMessage(R.string.empty_phone_number_tip);
+                    }
+                }
                 //startActivity(new Intent(this,MenuActivity.class));
             }
         } catch (HttpStatusException e) {
@@ -456,4 +472,16 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		// TODO Auto-generated method stub
 		Log.i(getClass().getSimpleName(), "OnAnyChatUserAtRoomMessage dwUserId:" + dwUserId+" bEnter:"+bEnter);
 	}*/
+    public boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = android.os.Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

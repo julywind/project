@@ -156,16 +156,5 @@
     <string name="soundRemind">声音提醒</string>
     <string name="vibratorRemind">震动提醒</string>
 
-    <string name="layer_person">巡查人员</string>
-    <string name="layer_bridge">桥梁</string>
-    <string name="layer_shuichi">水尺</string>
-    <string name="layer_jishui">易积水点位</string>
-    <string name="layer_road">道路</string>
-    <string name="layer_camera">摄像头</string>
-    <string name="layer_car">巡查车</string>
-    <string name="layer_pump">泵站</string>
-    <string name="layer_cangku">仓库</string>
-    <string name="task">我的任务</string>
-    <string name="task_now">当前</string>
-    <string name="task_history">历史</string>
+    <string name="empty_phone_number_tip">"您尚未设置手机号，需要设置后才能注册实时推送服务。现在设置？"</string>
 </resources>

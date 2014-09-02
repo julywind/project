@@ -42,9 +42,9 @@ public class AlarmListFragment extends BaseFragment {
             int position = message.what;
             // msg.what means index to delete
 
-            if(position==-2)
+            if(position==-2&&getActivity()!=null)
             {
-                startActivity(new Intent(getActivity(),Login.class));
+                startActivity(new Intent(getActivity(), Login.class));
                 getActivity().finish();
                 return;
             }

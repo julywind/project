@@ -8,6 +8,7 @@ import com.aokunsang.authority.AuthorityType;
 import com.aokunsang.authority.FireAuthority;
 import com.aokunsang.util.ResultTypeEnum;
 import com.aokunsang.util.TextUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import com.aokunsang.web.BaseController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登陆方法
@@ -39,7 +42,7 @@ public class LoginController extends BaseController{
 	public ModelAndView login(HttpSession session){
         if(getLoginUser(session)!=null)
         {
-            return new ModelAndView("JumpUrl","result", new JsonResultBean(true,getLoginUser(session),"/user/home"));
+            return new ModelAndView("JumpUrl","result", new JsonResultBean(true,getLoginUser(session).toString(),"/user/home"));
         }
 		return new ModelAndView("login", "result", new JsonResultBean(false,"请输入userName和passWord登录"));
 	}
@@ -51,20 +54,27 @@ public class LoginController extends BaseController{
 
 	@RequestMapping(value="/user/login",method=RequestMethod.POST)
 	public ModelAndView logon(HttpSession session,String userName,String passWord){
+        Map<String,Object> data = new HashMap<String,Object>();
         if(getLoginUser(session)!=null)
         {
             //return new ModelAndView(new RedirectView("/user/home",true),"result", new JsonResultBean(true,"登录成功"));
-            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"登录成功","/user/home"));
+            data.put("msg","登陆成功");
+            data.put("user", getLoginUser(session));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,data,"/user/home"));
         }
 
 		User user = loginService.getUser(userName, passWord);
 		if(user!=null){
             user.setPassWord("");
+            data.put("msg","登陆成功");
+            data.put("user",user);
             session.setAttribute(LOGIN_FLAG,user);
             //return new ModelAndView(new RedirectView("/user/home",true), "result", new JsonResultBean(true,"登录成功"));
-            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,"登录成功","/user/home"));
+            return new ModelAndView("JumpUrl", "result", new JsonResultBean(true,data,"/user/home"));
 		}else{
-            return new ModelAndView("login", "result", new JsonResultBean(false,"用户名或者密码错误"));
+            data.put("msg","用户名或者密码错误");
+            data.put("user",null);
+            return new ModelAndView("login", "result", new JsonResultBean(false,data));
 		}
 	}
 
