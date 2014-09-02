@@ -40,9 +40,6 @@ public class AuthorityAnnotationInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod handler2=(HandlerMethod) handler;
         FireAuthority fireAuthority = handler2.getMethodAnnotation(FireAuthority.class);
 
-        logger.debug(getClass().getSimpleName(),"HeaderInfo:  start");
-        Enumeration df = request.getHeaderNames();
-        logger.debug(getClass().getSimpleName(),"HeaderInfo:  end");
         if(null == fireAuthority){
             //没有声明权限,放行
             return true;

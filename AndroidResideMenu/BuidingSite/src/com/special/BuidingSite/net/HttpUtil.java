@@ -52,19 +52,19 @@ public class HttpUtil {
 	}
 
 	public static String getServerAddr(Context ctx) {
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
 		return sp.getString("serverAddr", Login.Default_Server);
 	}
 
 	public static String getCookieStr(Context ctx) {
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
 		String cookieStr =sp.getString("cookieStr", ""); 
 		Log.i(logTag,"getCookieStr:"+cookieStr);
 		return cookieStr;
 	}
     public static void setCookieStr(Context ctx,String cookieStr) {
         Log.i(logTag,"Login.setCookieStr()  cookieStr=" + cookieStr);
-        SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+        SharedPreferences sp = ctx.getSharedPreferences("special", 0);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("cookieStr", cookieStr);
         editor.commit();
@@ -191,7 +191,6 @@ public class HttpUtil {
 					+ URLEncoder.encode(entry.getValue());
 		}
 		try {
-			System.out.println("url=" + url + "?" + paramStr + "\n");
 			// System.out.println("===========post method start=========");
 			responseMessage = new StringBuffer();
 			reqUrl = new URL(url);
@@ -217,14 +216,6 @@ public class HttpUtil {
 
 			int charCount = -1;
 			in = connection.getInputStream();
-            Map<String,List<String>> df = connection.getHeaderFields();
-
-            String headerinfo = "";
-            for(String key : df.keySet())
-            {
-                headerinfo+="HeaderInfo:   <"+key+">"+df.get(key)+"\n";
-            }
-            System.out.println(headerinfo);
 
             String string=connection.getHeaderField("Set-Cookie");
             if(string!=null){
@@ -239,7 +230,9 @@ public class HttpUtil {
 			System.out.println("===========post method end=========");
 		} finally {
 			try {
-				in.close();
+                if(in!=null) {
+                    in.close();
+                }
 				if (reqOut != null)
 					reqOut.close();
 			} catch (Exception e) {

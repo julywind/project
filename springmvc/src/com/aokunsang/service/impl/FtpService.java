@@ -92,6 +92,17 @@ public class FtpService extends DefaultFtplet {
     public FtpletResult onDeleteEnd(FtpSession session, FtpRequest request)
             throws FtpException, IOException {
         // TODO Auto-generated method stub
+        if(session!=null && session.isLoggedIn())
+        {
+            User ftpUser = session.getUser();
+            String fileName = ftpUser.getHomeDirectory();
+            if(!fileName.endsWith("/"))
+            {
+                fileName+="/";
+            }
+            fileName+=request.getArgument();
+            alarmService.deleteAlarmByFilename(fileName);
+        }
         return super.onDeleteEnd(session, request);
     }
 

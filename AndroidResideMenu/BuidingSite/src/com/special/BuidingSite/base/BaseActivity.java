@@ -27,28 +27,7 @@ import android.widget.Toast;
 
 public class BaseActivity extends Activity {
 	protected Context instance = null;
-	
-	public static JSONObject getCurrentUser(Context ctx)
-	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
-		JSONObject obj=null;
-		try{
-			obj=JSONObject.fromObject(sp.getString("currentUser", "{}"));
-		}catch(Exception e)
-		{
-			//e.printStackTrace();
-		}
-		return obj;
-	}
-	public void setCurrentUser(JSONObject currentUser) {
-		if(currentUser==null)
-		{
-			setCurrentUserStr(null);
-		}else{
-			setCurrentUserStr(currentUser.toString());
-		}
-	}
-	
+
 	/*
      * 判断网络连接是否已开
      * 2012-08-20
@@ -65,7 +44,7 @@ public class BaseActivity extends Activity {
     }
 	public static Long isLoadingPerson(Context ctx)
 	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
 		Long obj=-1l;
 		try{
 			obj=sp.getLong("loadingPerson", -1l);
@@ -78,7 +57,7 @@ public class BaseActivity extends Activity {
 	
 	public static void resetLoadingPerson(Context ctx)
 	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 		editor.remove("loadingPerson");
 		editor.commit();
@@ -87,7 +66,7 @@ public class BaseActivity extends Activity {
 	private void setCurrentUserStr(String currentUser)
 	{
 		
-		SharedPreferences sp = getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = getSharedPreferences("special", 0);
 		Editor editor = sp.edit();
 		if(currentUser==null)
 		{

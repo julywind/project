@@ -34,7 +34,7 @@ public class BaseFragment extends Fragment {
 	
 	public static JSONObject getCurrentUser(Context ctx)
 	{
-		SharedPreferences sp = ctx.getSharedPreferences("cfrt", 0);
+		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
 		JSONObject obj=null;
 		try{
 			obj=JSONObject.fromObject(sp.getString("currentUser", "{}"));

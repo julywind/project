@@ -25,6 +25,7 @@ public class AlarmServiceImpl implements AlarmService {
 	static String getAlarm = "select * from alarm where id = ? ";
     static String deleteAlarm = "delete from alarm where id = ? ";
     static String deleteAlarms = "delete from alarm where id in (?) ";
+    static String deleteAlarmByFilename = "delete from alarm where fileName = ? ";
 
 	@Override
 	public void addAlarm(Alarm alarm) {
@@ -39,6 +40,11 @@ public class AlarmServiceImpl implements AlarmService {
     @Override
     public boolean deleteAlarm(Alarm alarm) {
         return baseDao.editObject(deleteAlarm, new String[]{String.valueOf(alarm.getId())})>0;
+    }
+
+    @Override
+    public boolean deleteAlarmByFilename(String filename) {
+        return baseDao.editObject(deleteAlarmByFilename, new String[]{filename})>0;
     }
 
     @Override
