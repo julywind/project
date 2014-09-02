@@ -6,9 +6,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-import com.special.BuidingSite.PhoneApp;
+import com.special.BuidingSite.ui.PhoneApp;
 import com.special.BuidingSite.R;
-import com.special.BuidingSite.base.BaseActivity;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;

@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import com.special.BuidingSite.Login;
+import com.special.BuidingSite.ui.LoginActivity;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
 
@@ -53,7 +53,7 @@ public class HttpUtil {
 
 	public static String getServerAddr(Context ctx) {
 		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
-		return sp.getString("serverAddr", Login.Default_Server);
+		return sp.getString("serverAddr", LoginActivity.Default_Server);
 	}
 
 	public static String getCookieStr(Context ctx) {

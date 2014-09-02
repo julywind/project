@@ -1,4 +1,4 @@
-package com.special.BuidingSite;
+package com.special.BuidingSite.ui;
 
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -11,15 +11,14 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.*;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.special.BuidingSite.R;
 import com.special.BuidingSite.base.BaseActivity;
-import com.special.BuidingSite.common.BroadCastAction;
 import com.special.BuidingSite.net.HttpStatusException;
 import com.special.BuidingSite.net.HttpUtil;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -32,23 +31,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
+public class LoginActivity extends BaseActivity/* implements AnyChatBaseEvent*/{
 	private EditText mUser; // 帐号编辑框
 	private EditText mPassword; // 密码编辑框
 	private CheckBox rmWord;
 
-	public static final String LOGIN_SUCCESS = "com.cfrt.patrol.loginSuccess";
-	public static final String LOGIN_FAILED = "com.cfrt.patrol.loginFialed";
-	public static final String PROCESS_OVER = "com.cfrt.patrol.processOver";
 	public static final String Default_Server = "http://123.57.8.66/";
 	private PackageInfo info = null;
-	private static Login mContext = null;
+	private static LoginActivity mContext = null;
 
 	private Timer timer;
 	//private ConfigEntity configEntity;
 	//private AnyChatCoreSDK anychat=null;
 
-	public static Login getInstance() {
+	public static LoginActivity getInstance() {
 		return mContext;
 	}
 
@@ -71,9 +67,15 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login_wx);
-        MiPushClient.unregisterPush(this);
 
+        JSONObject usr = PhoneApp.getCurrentUser(this);
+        if(usr!=null&&!usr.isEmpty()&&!TextUtils.isEmpty(HttpUtil.getCookieStr(this)))
+        {
+            onLoginSuccess();
+            return ;
+        }
+        MiPushClient.unregisterPush(this);
+        setContentView(R.layout.login_wx);
 		mContext = this;
 		mUser = (EditText) findViewById(R.id.login_user_edit);
 		mPassword = (EditText) findViewById(R.id.login_passwd_edit);
@@ -86,24 +88,9 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		LoadUserInfo();
 		strUrl = getServerAddr();
 
-		initBroadCaseReceiver();
-		BaseActivity.resetLoadingPerson(this);
-		
 		/*configEntity = ConfigService.LoadConfig(this);
 		InitialSDK();*/
 	}
-
-	private void initBroadCaseReceiver() {
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(Login.LOGIN_SUCCESS);
-		filter.addAction(Login.LOGIN_FAILED);
-		filter.addAction(BroadCastAction.MSG_HEART_BEAT);
-
-		ubreceiver = new HeartBroadcastReceiver();
-		registerReceiver(ubreceiver, filter);
-	}
-
-	private HeartBroadcastReceiver ubreceiver = null;
 
 	private void LoadUserInfo() {
 		SharedPreferences sp = getSharedPreferences("special", 0);
@@ -165,13 +152,6 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		editor.commit();
 	}
 
-	private void setCookieStr(String cookieStr) {
-		Log.i(this.getClass().getSimpleName(),"Login.setCookieStr()  cookieStr=" + cookieStr);
-		SharedPreferences sp = getSharedPreferences("special", 0);
-		Editor editor = sp.edit();
-		editor.putString("cookieStr", cookieStr);
-		editor.commit();
-	}
 
 	private void SaveUserInfo() {
 		SharedPreferences sp = getSharedPreferences("special", 0);
@@ -250,6 +230,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
                 public void run() {
                     if(succ)
                     {
+                        SaveUserInfo();
                         onLoginSuccess();
                     }else
                     {
@@ -296,14 +277,11 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	protected void onDestroy() {
 		stopLogin = true;
         closeWaitingDialog();
-		if (ubreceiver != null)
-			unregisterReceiver(ubreceiver);
 		super.onDestroy();
 	}
 
 	//private boolean isLoginingVideo = false;
 	private void onLoginSuccess() {
-		SaveUserInfo();
         startActivity(new Intent(this,MenuActivity.class));
         finish();
 	}
@@ -401,7 +379,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 	}
 
 	public void login_pw(View v) { // 忘记密码按钮
-		Uri uri = Uri.parse("http://3g.qq.com");
+		Uri uri = Uri.parse("http://123.57.8.66/");
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		startActivity(intent);
 		// Intent intent = new Intent();
@@ -409,70 +387,7 @@ public class Login extends BaseActivity/* implements AnyChatBaseEvent*/{
 		// startActivity(intent);
 	}
 
-	private class HeartBroadcastReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
-			if (intent.getAction().equals(BroadCastAction.MSG_HEART_BEAT)) {
-				/*if (isServiceRunning(HeartBeatService.class.getName())) {
-					List<Activity> list = PatrolApp.getInstance()
-							.getActivityList();
-					Activity last = list.get(list.size() - 1);
-
-					if (last instanceof LoadingActivity) {
-						sendBroadcast(new Intent(LOGIN_SUCCESS));
-						return;
-					} else if (last instanceof Login) {
-						stopService(new Intent(instance, HeartBeatService.class));
-					}
-				}*/
-			}
-		}
-	}
-	/*
-	@Override
-	public void OnAnyChatConnectMessage(boolean bSuccess) {
-		if (!bSuccess) {
-			onLoginPatrolSuccess();
-			Toast.makeText(this, "连接视频聊天服务器失败", Toast.LENGTH_SHORT).show();
-		}
-	}
-
-	@Override
-	public void OnAnyChatEnterRoomMessage(int dwRoomId, int dwErrorCode) {
-		// TODO Auto-generated method stub
-		Log.i(getClass().getSimpleName(), "OnAnyChatEnterRoomMessage dwRoomId:" + dwRoomId+" dwErrorCode:"+dwErrorCode);
-	}
-
-	@Override
-	public void OnAnyChatLinkCloseMessage(int dwErrorCode) {
-		Log.i(getClass().getSimpleName(), "连接关闭，error：" + dwErrorCode);
-	}
-
-	@Override
-	public void OnAnyChatLoginMessage(int dwUserId, int dwErrorCode) {
-		isLoginingVideo = false;
-		onLoginPatrolSuccess();
-		if (dwErrorCode == 0) {
-			Log.i(getClass().getSimpleName(),"登录视频服务器成功！");
-		} else {
-			Log.i(getClass().getSimpleName(),"登录视频服务器失败，错误代码：" + dwErrorCode);
-		}
-	}
-
-	@Override
-	public void OnAnyChatOnlineUserMessage(int dwUserNum, int dwRoomId) {
-		// TODO Auto-generated method stub
-		Log.i(getClass().getSimpleName(), "OnAnyChatOnlineUserMessage dwUserNum:" + dwUserNum+" dwRoomId:"+dwRoomId);
-	}
-
-	@Override
-	public void OnAnyChatUserAtRoomMessage(int dwUserId, boolean bEnter) {
-		// TODO Auto-generated method stub
-		Log.i(getClass().getSimpleName(), "OnAnyChatUserAtRoomMessage dwUserId:" + dwUserId+" bEnter:"+bEnter);
-	}*/
-    public boolean shouldInit() {
+    private boolean shouldInit() {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
         String mainProcessName = getPackageName();

@@ -1,4 +1,4 @@
-package com.special.BuidingSite;
+package com.special.BuidingSite.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+import com.special.BuidingSite.*;
+import com.special.BuidingSite.ui.fragments.AlarmListFragment;
+import com.special.BuidingSite.ui.fragments.HomeFragment;
+import com.special.BuidingSite.ui.fragments.ProfileFragment;
+import com.special.BuidingSite.ui.fragments.SettingsFragment;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
@@ -25,6 +30,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PhoneApp.getInstance().addActivity(this);
         setContentView(R.layout.main);
         mContext = this;
         setUpMenu();

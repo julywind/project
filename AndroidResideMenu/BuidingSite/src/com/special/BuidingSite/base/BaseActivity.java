@@ -3,15 +3,13 @@ package com.special.BuidingSite.base;
 import java.io.File;
 import java.util.ArrayList;
 
-import net.sf.json.JSONObject;
+import com.special.BuidingSite.ui.PhoneApp;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -42,42 +40,8 @@ public class BaseActivity extends Activity {
         }
         return bisConnFlag;
     }
-	public static Long isLoadingPerson(Context ctx)
-	{
-		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
-		Long obj=-1l;
-		try{
-			obj=sp.getLong("loadingPerson", -1l);
-		}catch(Exception e)
-		{
-			//e.printStackTrace();
-		}
-		return obj;
-	}
-	
-	public static void resetLoadingPerson(Context ctx)
-	{
-		SharedPreferences sp = ctx.getSharedPreferences("special", 0);
-		Editor editor = sp.edit();
-		editor.remove("loadingPerson");
-		editor.commit();
-	}
 
-	private void setCurrentUserStr(String currentUser)
-	{
-		
-		SharedPreferences sp = getSharedPreferences("special", 0);
-		Editor editor = sp.edit();
-		if(currentUser==null)
-		{
-			editor.remove("currentUser");
-		}else
-		{
-			editor.putString("currentUser", currentUser);
-		}
-		editor.commit();
-	}
-	//删除通知    
+	//删除通知
 	protected void clearNotification(){
         // 启动后删除之前我们定义的通知   
         NotificationManager notificationManager = (NotificationManager) this 
@@ -126,7 +90,7 @@ public class BaseActivity extends Activity {
 			clearNotification();
 		}
 		
-		//PatrolApp.getInstance().addActivity(this);
+		PhoneApp.getInstance().addActivity(this);
 		
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {

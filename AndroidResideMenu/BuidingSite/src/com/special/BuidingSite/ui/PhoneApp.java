@@ -1,19 +1,17 @@
-package com.special.BuidingSite;
+package com.special.BuidingSite.ui;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
-import android.os.Process;
+import com.special.BuidingSite.net.HttpUtil;
 import com.special.BuidingSite.receiver.MessageReceiver;
-import com.xiaomi.mipush.sdk.MiPushClient;
 import net.sf.json.JSONObject;
 
 public class PhoneApp extends Application {
@@ -98,7 +96,8 @@ public class PhoneApp extends Application {
                 activity.finish(); 
         }
     	setCurrentUserStr(null);
-    	startActivity(new Intent(this,Login.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        HttpUtil.setCookieStr(this, null);
+    	startActivity(new Intent(this,LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
     //SysApplication.getInstance().addActivity(this); 
     public void exit() { 
@@ -112,6 +111,8 @@ public class PhoneApp extends Application {
             e.printStackTrace(); 
         } finally {
         	setCurrentUserStr(null);
+            HttpUtil.setCookieStr(this, null);
+            instance = null;
         } 
     }
     

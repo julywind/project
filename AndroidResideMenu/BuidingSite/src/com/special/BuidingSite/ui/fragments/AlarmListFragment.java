@@ -1,4 +1,4 @@
-package com.special.BuidingSite;
+package com.special.BuidingSite.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.special.BuidingSite.R;
+import com.special.BuidingSite.ui.LoginActivity;
 import com.special.BuidingSite.base.BaseFragment;
 import com.special.BuidingSite.lib.PullToRefreshBase;
 import com.special.BuidingSite.net.HttpStatusException;
 import com.special.BuidingSite.net.HttpUtil;
 import com.special.BuidingSite.po.Alarm;
+import com.special.BuidingSite.ui.PhoneApp;
 import com.special.BuidingSite.util.DateUtil;
 import com.special.BuidingSite.util.JSONUtil;
 import net.sf.json.JSONArray;
@@ -44,8 +47,7 @@ public class AlarmListFragment extends BaseFragment {
 
             if(position==-2&&getActivity()!=null)
             {
-                startActivity(new Intent(getActivity(), Login.class));
-                getActivity().finish();
+                PhoneApp.getInstance().backLogin();
                 return;
             }
             if (position >= 0) {
