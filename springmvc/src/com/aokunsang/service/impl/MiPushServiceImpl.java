@@ -31,7 +31,7 @@ public class MiPushServiceImpl implements MiPushService {
     public static final String APP_SECRET_KEY="bTf0zK6nR9PeW85L0yykuQ==";
 
     private void sendMessage() throws Exception {
-        Constants.useSandbox();
+        initConstant();
         Sender sender = new Sender(APP_SECRET_KEY);
         String messagePayload= "This is a message";
         String title = "notification title";
@@ -46,7 +46,7 @@ public class MiPushServiceImpl implements MiPushService {
     }
 
     private void sendMessages() throws Exception {
-        Constants.useSandbox();
+        initConstant();
         Sender sender = new Sender(APP_SECRET_KEY);
         List<TargetedMessage> messages = new ArrayList<TargetedMessage>();
         TargetedMessage targetedMessage1 = new TargetedMessage();
@@ -79,7 +79,7 @@ public class MiPushServiceImpl implements MiPushService {
     }
 
     private void sendMessageToAlias() throws Exception {
-        Constants.useSandbox();
+        initConstant();
         Sender sender = new Sender(APP_SECRET_KEY);
         String messagePayload = "This is a message";
         String title = "notification title";
@@ -94,9 +94,19 @@ public class MiPushServiceImpl implements MiPushService {
         sender.sendToAlias(message, alias, 0); //根据alias，发送消息到指定设备上，不重试。
     }
 
+    private void initConstant()
+    {
+        if("true".equals(FtpService.properties.getProperty("useOfficial")))
+        {
+            Constants.useOfficial();
+        }else {
+            Constants.useSandbox();
+        }
+    }
+
     @Override
     public void sendMessageToAliases(List<String> receivers,Map<String,String> map) throws Exception {
-        Constants.useSandbox();
+        initConstant();
         Sender sender = new Sender(APP_SECRET_KEY);
         String messagePayload = map.get("payload");//"您有一条新消息";
         String title = map.get("title");//"顺风耳新消息";
@@ -119,7 +129,7 @@ public class MiPushServiceImpl implements MiPushService {
     }
 
     private void sendBroadcast() throws Exception {
-        Constants.useSandbox();
+        initConstant();
         Sender sender = new Sender(APP_SECRET_KEY);
         String messagePayload = "This is a message";
         String title = "notification title";

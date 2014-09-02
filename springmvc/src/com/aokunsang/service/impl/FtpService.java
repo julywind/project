@@ -121,7 +121,7 @@ public class FtpService extends DefaultFtplet {
             alarm.setGenDate(System.currentTimeMillis());
 
             List<Alarm> alarmsInDb = alarmService.query("select * from alarm where file_name = ?",new String[]{alarm.getFileName()});
-            if(alarmsInDb==null||!alarmsInDb.isEmpty()) {
+            if(alarmsInDb==null||alarmsInDb.isEmpty()) {
                 alarmService.addAlarm(alarm);
             }
             try {

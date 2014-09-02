@@ -45,7 +45,7 @@
      	<tx:attributes>
      		<tx:method name="add*" propagation="REQUIRED"/>
      		<tx:method name="update*" propagation="REQUIRED"/>
-     		<tx:method name="*" read-only="true" rollback-for="com.aokunsang.util.DaoException"/>
+     		<tx:method name="*" rollback-for="com.aokunsang.util.DaoException"/>
      	</tx:attributes>
      </tx:advice>
      

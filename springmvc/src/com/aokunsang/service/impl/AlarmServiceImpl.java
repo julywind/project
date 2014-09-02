@@ -25,7 +25,7 @@ public class AlarmServiceImpl implements AlarmService {
 	static String getAlarm = "select * from alarm where id = ? ";
     static String deleteAlarm = "delete from alarm where id = ? ";
     static String deleteAlarms = "delete from alarm where id in (?) ";
-    static String deleteAlarmByFilename = "delete from alarm where fileName = ? ";
+    static String deleteAlarmByFilename = "delete from alarm where file_name = ? ";
 
 	@Override
 	public void addAlarm(Alarm alarm) {
