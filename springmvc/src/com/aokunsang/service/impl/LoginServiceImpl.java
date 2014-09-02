@@ -3,6 +3,7 @@
  */
 package com.aokunsang.service.impl;
 
+import com.aokunsang.po.Alarm;
 import com.aokunsang.util.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class LoginServiceImpl implements LoginService {
     static String getUserFromId = "select * from user where id=?";
 	static String duplicateUser = "select * from user where username = ? ";
     static String updatePasswd = "update user set passWord=md5(?) where id=?";
+    static String getUserTelephones = "select * from user where length(phone_number)>0 group by phone_number";
 	@Override
 	public User getUser(String userName, String password) {
         if(TextUtil.isEmpty(userName) || TextUtil.isEmpty(password))
@@ -71,5 +73,9 @@ public class LoginServiceImpl implements LoginService {
     public Integer updatePasswd(User user)
     {
         return baseDao.editObject(updatePasswd, new Object[]{user.getPassWord(),user.getId()});
+    }
+    @Override
+    public List<User> getAllUserPhoneNumbers(){
+        return baseDao.getObjList(getUserTelephones,User.class,null);
     }
 }

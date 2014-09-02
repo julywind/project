@@ -6,11 +6,13 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+import com.special.BuidingSite.CODE_TAG;
 import com.special.BuidingSite.ui.PhoneApp;
 import com.special.BuidingSite.R;
 import com.xiaomi.mipush.sdk.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 1、PushMessageReceiver是个抽象类，该类继承了BroadcastReceiver。
@@ -35,8 +37,17 @@ public class MessageReceiver extends PushMessageReceiver {
         String log = context.getString(R.string.recv_message, message.getContent());
 
         Message msg = Message.obtain();
-        if (message.isNotified()) {
+        //if (message.isNotified()) {
             msg.obj = log;
+        //}
+        Map<String,String> extra = message.getExtra();
+        String code_tag = extra.get("code");
+        if(code_tag!=null)
+        {
+            if(code_tag.equals(CODE_TAG.CODE_FILE_DELETE))
+            {
+                //ToDo do sth. while delete
+            }
         }
         PhoneApp.getHandler().sendMessage(msg);
     }

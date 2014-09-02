@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import com.special.BuidingSite.net.HttpUtil;
 import com.special.BuidingSite.receiver.MessageReceiver;
+import com.xiaomi.mipush.sdk.Constants;
 import net.sf.json.JSONObject;
 
 public class PhoneApp extends Application {
@@ -113,7 +114,7 @@ public class PhoneApp extends Application {
         	setCurrentUserStr(null);
             HttpUtil.setCookieStr(this, null);
             instance = null;
-        } 
+        }
     }
     
     public void onLowMemory() { 

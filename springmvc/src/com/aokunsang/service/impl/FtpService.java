@@ -1,13 +1,17 @@
 package com.aokunsang.service.impl;
 
 import com.aokunsang.po.Alarm;
+import com.aokunsang.po.User;
 import com.aokunsang.service.AlarmService;
+import com.aokunsang.CODE_TAG;
+import com.aokunsang.service.LoginService;
 import com.aokunsang.service.MiPushService;
+import com.aokunsang.util.PropertiesUtil;
 import org.apache.ftpserver.ftplet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.*;
 
 public class FtpService extends DefaultFtplet {
 
@@ -17,12 +21,94 @@ public class FtpService extends DefaultFtplet {
     @Autowired
     private MiPushService miPushService;
 
+    @Autowired
+    private LoginService loginService;
+
+    private final static int MAX_USER_NUM_ONCE_SENT=1024;
+    // 类加载的路径
+    public static String classloaderPath = FtpService.class.getClassLoader().getResource("/").getPath().replaceFirst("file:/", "");
+    //获取当前项目的根路径
+    public static PropertiesUtil properties = new PropertiesUtil(classloaderPath+"notify_msg.properties");
+
+    /**
+     * 推送消息给所有有手机号的用户,因为手机号将会作为设备的别名，且能保证每个用户只有最后一个注册别名的设备能接收到该消息
+     * @throws Exception
+     */
+    private void notifyAllPhoneAlarmChanged(Alarm alarm, String codeTag) throws Exception {
+        List<User> userList = loginService.getAllUserPhoneNumbers();
+        List<List<String>> receivers = new LinkedList<List<String>>();
+        List<String> tempReceiver = new LinkedList<String>();
+
+        for(int idx=0 ; idx<userList.size();idx++)
+        {
+            tempReceiver.add(userList.get(idx).getPhoneNumber());
+            if((idx+1)%MAX_USER_NUM_ONCE_SENT ==0)
+            {
+                receivers.add(tempReceiver);
+                tempReceiver=new LinkedList<String>();
+            }
+        }
+        if(!tempReceiver.isEmpty())
+        {
+            receivers.add(tempReceiver);
+        }
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("description",properties.getProperty("payload"));
+        map.put("title",properties.getProperty("title"));
+        if(alarm.getId()==null) {
+            map.put("payload", properties.getProperty("description_new"));
+        }else
+        {
+            map.put("payload", properties.getProperty("description_updated")+"  alarmServerId="+alarm.getId());
+        }
+
+        map.put("code",codeTag);
+        map.put("id",alarm.getId()+"");
+        for(List<String> recs : receivers)
+        {
+            miPushService.sendMessageToAliases(recs,map);
+        }
+    }
+
+    /**
+     * 推送消息给所有有手机号的用户,因为手机号将会作为设备的别名，且能保证每个用户只有最后一个注册别名的设备能接收到该消息
+     * @throws Exception
+     */
+    private void notifyAllPhoneServerRetart() throws Exception {
+        List<User> userList = loginService.getAllUserPhoneNumbers();
+        List<List<String>> receivers = new LinkedList<List<String>>();
+        List<String> tempReceiver = new LinkedList<String>();
+
+        for(int idx=0 ; idx<userList.size();idx++)
+        {
+            tempReceiver.add(userList.get(idx).getPhoneNumber());
+            if((idx+1)%MAX_USER_NUM_ONCE_SENT ==0)
+            {
+                receivers.add(tempReceiver);
+                tempReceiver=new LinkedList<String>();
+            }
+        }
+        if(!tempReceiver.isEmpty())
+        {
+            receivers.add(tempReceiver);
+        }
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("description",properties.getProperty("payload"));
+        map.put("title",properties.getProperty("title"));
+        map.put("payload", properties.getProperty("service_restart"));
+
+        map.put("code",CODE_TAG.CODE_SERVER_START);
+        for(List<String> recs : receivers)
+        {
+            miPushService.sendMessageToAliases(recs,map);
+        }
+    }
     @Override
     public FtpletResult onUploadEnd(FtpSession session, FtpRequest request)
             throws FtpException, IOException {
         if(session!=null && session.isLoggedIn())
         {
-            User ftpUser = session.getUser();
+            org.apache.ftpserver.ftplet.User ftpUser = session.getUser();
             Alarm alarm = new Alarm();
             alarm.setUserName(ftpUser.getName());
             String fileName = ftpUser.getHomeDirectory();
@@ -33,9 +119,19 @@ public class FtpService extends DefaultFtplet {
             fileName+=request.getArgument();
             alarm.setFileName(fileName);
             alarm.setGenDate(System.currentTimeMillis());
-            alarmService.addAlarm(alarm);
+
+            List<Alarm> alarmsInDb = alarmService.query("select * from alarm where file_name = ?",new String[]{alarm.getFileName()});
+            if(alarmsInDb==null||!alarmsInDb.isEmpty()) {
+                alarmService.addAlarm(alarm);
+            }
             try {
-                miPushService.sendMessageToAliases();
+                if(alarmsInDb == null || alarmsInDb.isEmpty())
+                {
+                    notifyAllPhoneAlarmChanged(alarm, CODE_TAG.CODE_FILE_NEW);
+                }else
+                {
+                    notifyAllPhoneAlarmChanged(alarmsInDb.get(0),CODE_TAG.CODE_FILE_UPDATED);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,6 +148,11 @@ public class FtpService extends DefaultFtplet {
     @Override
     public void destroy() {
         // TODO Auto-generated method stub
+        /*try {
+            notifyAllPhoneServerRetart();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         super.destroy();
     }
 
@@ -103,7 +204,7 @@ public class FtpService extends DefaultFtplet {
         // TODO Auto-generated method stub
         if(session!=null && session.isLoggedIn())
         {
-            User ftpUser = session.getUser();
+            org.apache.ftpserver.ftplet.User ftpUser = session.getUser();
             String fileName = ftpUser.getHomeDirectory();
             if(!fileName.endsWith("/"))
             {
@@ -111,6 +212,13 @@ public class FtpService extends DefaultFtplet {
             }
             fileName+=request.getArgument();
             alarmService.deleteAlarmByFilename(fileName);
+            try{
+                Alarm alart = new Alarm();
+                alart.setFileName(fileName);
+                notifyAllPhoneAlarmChanged(alart, CODE_TAG.CODE_FILE_DELETE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return super.onDeleteEnd(session, request);
     }

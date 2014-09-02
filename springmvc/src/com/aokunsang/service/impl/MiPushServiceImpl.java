@@ -4,6 +4,7 @@
 package com.aokunsang.service.impl;
 
 import com.aokunsang.dao.BaseDao;
+import com.aokunsang.CODE_TAG;
 import com.aokunsang.service.MiPushService;
 import com.xiaomi.xmpush.server.Constants;
 import com.xiaomi.xmpush.server.Message;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tushen
@@ -26,26 +28,7 @@ public class MiPushServiceImpl implements MiPushService {
 	private BaseDao baseDao;
 
     public static final String PACKAGE_NAME = "com.special.BuidingSite";
-    public static final String APP_SECRET_KEY="";
-    public MiPushServiceImpl()
-    {
-        super();
-    }
-
-    @Override
-    public Message buildMessage() throws Exception {
-        String messagePayload = "这是消息内容";
-        String title = "通知标题";
-        String description = "这是描述";
-        Message message = new Message.Builder()
-                .title(title)
-                .description(description).payload(messagePayload)
-                .restrictedPackageName(PACKAGE_NAME)
-                .passThrough(0)  //消息使用通知栏提示
-                .notifyType(1)     // 使用默认提示音提示
-                .build();
-        return message;
-    }
+    public static final String APP_SECRET_KEY="bTf0zK6nR9PeW85L0yykuQ==";
 
     private void sendMessage() throws Exception {
         Constants.useOfficial();
@@ -112,23 +95,27 @@ public class MiPushServiceImpl implements MiPushService {
     }
 
     @Override
-    public void sendMessageToAliases() throws Exception {
+    public void sendMessageToAliases(List<String> receivers,Map<String,String> map) throws Exception {
         Constants.useOfficial();
         Sender sender = new Sender(APP_SECRET_KEY);
-        String messagePayload = "这是一个新消息";
-        String title = "新消息标题";
-        String description = "有新消息上传了";
-        List<String> aliasList = new ArrayList<String>();
+        String messagePayload = map.get("payload");//"您有一条新消息";
+        String title = map.get("title");//"顺风耳新消息";
+        String description = map.get("description");//点击后toast出来的消息
+
+        /*List<String> aliasList = new ArrayList<String>();
         aliasList.add("18612082092");  //alias非空白，不能包含逗号，长度小于128。
-        aliasList.add("13701329128");  //alias非空白，不能包含逗号，长度小于128。
+        aliasList.add("13701329128");  //alias非空白，不能包含逗号，长度小于128。*/
         Message message = new Message.Builder()
                 .title(title)
-                .description(description).payload(messagePayload)
+                .description(description)
+                .payload(messagePayload)
                 .restrictedPackageName(PACKAGE_NAME)
-                .passThrough(0)  //消息使用通知栏提示
-                .notifyType(1)     // 使用默认提示音提示
+                .passThrough(CODE_TAG.CODE_FILE_NEW.equals((String) map.get("code")) ? 0 : 1)  //0 消息使用通知栏提示 1不使用通知栏提醒
+                .notifyType(-1)   // 使用默认提示音提示
+                .extra("code", map.get("code"))
+                .extra("id", map.get("id"))
                 .build();
-        sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
+        sender.sendToAlias(message, receivers/*aliasList*/, 0); //根据aliasList，发送消息到指定设备上，不重试。
     }
 
     private void sendBroadcast() throws Exception {
