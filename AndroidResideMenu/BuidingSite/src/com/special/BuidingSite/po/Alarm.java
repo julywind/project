@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @date Nov 4, 2011
  */
 public class Alarm implements Serializable{
+
 	private Integer id;
 	private String userName;  //备注
 	private String fileName; //文件路径
